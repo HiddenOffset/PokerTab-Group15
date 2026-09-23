@@ -1,24 +1,43 @@
-# pokertab
+# Poker Tab
 
-pokertab is a windows desktop app that helps manage a simple tournament style poker game.
+Poker Tab is a Windows desktop app that keeps the money straight at a casual
+poker night. One person, the accountant, records every buy-in, re-buy and
+cash-out; at the end Poker Tab computes each player's net and the fewest
+payments that settle everyone up.
 
-the goal of pokertab is to make running a poker tournament easier by keeping track of the players, buy ins, tournament setup, and total pot in real time.
+Requirements: [Requirement Analysis Document](docs/RAD.pdf) · Build and
+contribute: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 
-## features
+## Status
 
-pokertab will include
+| Requirement | State |
+| --- | --- |
+| REQ-1 Create a session | Done — name, today's date, saved to disk |
+| REQ-2 / REQ-3 Save and load | Done — one JSON file per session |
+| REQ-5 / REQ-6 Add player, reject duplicates | Done |
+| REQ-9 Buy-ins and re-buys | Next |
+| REQ-14 Cash-outs | Next |
+| REQ-17 to REQ-19 Settlement | Planned |
 
-* create a poker tournament session
-	* adding players to the tournament 
-	* choose how many tournament chips each player starts with
-	* choose how long each blind level lasts
-* track total amount of the players buy-ins in real time
-* track total pot from all player buy-ins
+Wireframes: [docs/wireframes](docs/wireframes) · Screenshots: [docs/screenshots](docs/screenshots)
 
-## goal
+## Quick start
 
-our goal is to create a simple program that makes casual poker tournaments easier to manage. one person can use pokertab to set up the tournament, add players, track buy ins, and keep track of the total pot throughout the game. once the tournament is over, the winner takes the entire pot.
+```
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
 
-Matthew Rohrer
-Travis Trinidad
-Nishanth Mahendran
+Then run `build/app/pokertab` (or `build\app\Debug\pokertab.exe` on Windows).
+
+## Team
+
+| Member | Role |
+| --- | --- |
+| Travis Trinidad | Narrative Lead |
+| Nishanth Mahendran | Front-End |
+| Matthew Rohrer | Back-End |
+| David Martindale | Problem Framer |
+
+CS course project, SDSU, Fall 2026.

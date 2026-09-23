@@ -1,0 +1,58 @@
+# ============================================================================
+# CI — runs on every pull request and on pushes to main
+# ----------------------------------------------------------------------------
+# tests:  builds the core library and runs the Catch2 suite on Linux and
+#         Windows. The suite checks REQ-1, REQ-2, REQ-3, REQ-5, REQ-6, REQ-8.
+#         A red run here blocks the merge.
+# gui:    proves the Dear ImGui app still compiles. It fetches ImGui from
+#         GitHub at configure time, so it is a separate job that does not
+#         slow the test job down.
+# ============================================================================
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  tests:
+    name: Core tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (core + tests only)
+        run: cmake -S . -B build -DPOKERTAB_BUILD_GUI=OFF -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: List tests by requirement
+        if: always()
+        shell: bash
+        run: |
+          exe=$(find build -name 'pokertab_tests' -o -name 'pokertab_tests.exe' | head -1)
+          "$exe" --list-tests
+
+  gui:
+    name: Desktop app compiles (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GLFW and OpenGL headers
+        run: sudo apt-get update && sudo apt-get install -y libglfw3-dev libgl1-mesa-dev
+
+      - name: Configure
+        run: cmake -S . -B build -DPOKERTAB_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
