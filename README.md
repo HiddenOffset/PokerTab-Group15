@@ -18,3 +18,6 @@ pokertab will include
 ## goal
 
 our goal is to create a simple program that makes casual poker tournaments easier to manage. one person can use pokertab to set up the tournament, add players, track buy ins, and keep track of the total pot throughout the game. once the tournament is over, the winner takes the entire pot.
+
+Matthew Rohrer
+Travis Trinidad
