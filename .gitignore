@@ -1,0 +1,17 @@
+# build trees
+build/
+build-*/
+out/
+cmake-build-*/
+
+# IDE (shared build/test tasks are kept)
+.vscode/*
+!.vscode/tasks.json
+.vs/
+*.swp
+.DS_Store
+
+# runtime
+imgui.ini
+*.pokertab.json
+*.tmp
