@@ -8,6 +8,7 @@
 // Buy-in, cash-out, undo and settle are drawn disabled; they arrive with
 // REQ-9, REQ-14, REQ-22 and REQ-17.
 // ============================================================================
+#define GL_SILENCE_DEPRECATION
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -346,11 +347,30 @@ void drawDashboard(App& app) {
 // ---- entry -----------------------------------------------------------------
 
 int main() {
-    if (!glfwInit()) return 1;
+    glfwSetErrorCallback([](int code, const char* msg) {
+        std::fprintf(stderr, "GLFW error %d: %s\n", code, msg);
+    });
+    if (!glfwInit()) { std::fprintf(stderr, "glfwInit failed\n"); return 1; }
+
+    // macOS only offers OpenGL 2.1 or a 3.2+ core profile; everywhere else
+    // a 3.0 context is the most compatible choice for the ImGui GL3 backend.
+#ifdef __APPLE__
+    const char* glslVersion = "#version 150";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#else
+    const char* glslVersion = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+#endif
     GLFWwindow* window = glfwCreateWindow(1280, 800, "Poker Tab", nullptr, nullptr);
-    if (!window) { glfwTerminate(); return 1; }
+    if (!window) {
+        std::fprintf(stderr, "Could not create the Poker Tab window (see GLFW error above).\n");
+        glfwTerminate();
+        return 1;
+    }
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
@@ -361,7 +381,7 @@ int main() {
     ImGui::StyleColorsLight();
     ImGui::GetStyle().FrameRounding = 3;
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
+    ImGui_ImplOpenGL3_Init(glslVersion);
 
     App app;
     app.recent = listRecentSessions();
