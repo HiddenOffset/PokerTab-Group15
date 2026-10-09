@@ -124,7 +124,7 @@ std::filesystem::path SessionStore::pathFor(const Session& s) {
         file += ok ? c : '_';
     }
     if (file.empty()) file = "session";
-    return defaultSessionsDir() / (s.date() + "_" + file + ".pokertab.json");
+    return defaultSessionsDir() / (s.date() + "_" + file + kFileExtension);
 }
 
 }  // namespace pokertab

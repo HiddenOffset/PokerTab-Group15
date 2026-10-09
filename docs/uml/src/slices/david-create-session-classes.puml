@@ -1,0 +1,59 @@
+@startuml classes
+' A2 slice — David Martindale — Create Session
+' Three classes; every attribute and method is in the code (app/dashboard.hpp,
+' core/include/pokertab/session.hpp, core/include/pokertab/session_store.hpp).
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #3A3A3A
+  BorderThickness 1.5
+  HeaderBackgroundColor #E8E8E4
+  AttributeFontSize 12
+}
+hide circle
+skinparam classAttributeIconSize 0
+
+class Dashboard <<boundary>> {
+  - session_ : optional<Session>
+  - sessionPath_ : path
+  - newName_ : string
+  - newDefaultBuyIn_ : string
+  - newError_ : string
+  --
+  + onCreateSession(name : string, defaultBuyIn : string)
+  + onOpenRecent(path : path)
+  + draw(nowSeconds : double)
+  - persist()
+  - showStatus(text : string)
+}
+
+class Session {
+  - name_ : string
+  - date_ : string
+  - defaultBuyInCents_ : Cents
+  - players_ : vector<Player>
+  --
+  + {static} create(name : string) : Session
+  + name() : string
+  + date() : string
+  + setDefaultBuyInCents(c : Cents)
+  + potCents() : Cents
+}
+
+class SessionStore <<utility>> {
+  + {static} kSchemaVersion : int = 1
+  + {static} kFileExtension : string = ".pokertab.json"
+  --
+  + {static} pathFor(session : Session) : path
+  + {static} save(session : Session, path : path)
+  + {static} load(path : path) : Session
+  + {static} toJson(session : Session) : string
+}
+
+Dashboard "1" --> "0..1" Session : current session
+Dashboard "1" ..> "1" SessionStore : saves through
+SessionStore "1" ..> "0..*" Session : serializes
+@enduml

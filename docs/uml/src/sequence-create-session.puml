@@ -1,6 +1,6 @@
 @startuml sequence-create-session
 ' Create Session (REQ-1, REQ-2) — Travis Trinidad
-' Traces drawNewSessionDialog() in app/main.cpp
+' Traces Dashboard::onCreateSession() in app/dashboard.cpp
 !include _style.iuml
 title Create Session (REQ-1)
 
@@ -23,8 +23,7 @@ alt name empty or buy-in invalid
 else valid
   Dashboard -> Session : create(name)
   activate Session
-  Session -> Session : todayIsoDate()
-  Session --> Dashboard : session
+  Session --> Dashboard : session (date = today)
   deactivate Session
 
   Dashboard -> Session : setDefaultBuyInCents(cents)

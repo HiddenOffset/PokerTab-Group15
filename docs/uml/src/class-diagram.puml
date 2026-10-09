@@ -1,7 +1,8 @@
 @startuml class-diagram
 ' Poker Tab — merged class diagram (PR2)
 ' Names follow docs/uml/naming-contract.md. Methods marked «planned» are
-' not yet in code; everything else is in core/include/pokertab/*.hpp.
+' not yet in code; everything else is in core/include/pokertab/*.hpp
+' and app/dashboard.hpp. One file per class.
 skinparam backgroundColor white
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
@@ -17,20 +18,23 @@ skinparam stereotype {
   CBackgroundColor #DCDCD8
 }
 hide circle
+skinparam classAttributeIconSize 0
 
 package "app (UI)" <<Frame>> {
   class Dashboard <<boundary>> {
-    - session : optional<Session>
-    - sessionPath : path
-    - status : string
+    - session_ : optional<Session>
+    - sessionPath_ : path
+    - status_ : string
+    - statusUntil_ : double
     --
+    + draw(nowSeconds : double)
     + onCreateSession(name : string, defaultBuyIn : string)
     + onOpenRecent(path : path)
     + onAddPlayer(name : string)
-    + onBuyIn(playerId : int, amount : string) «planned»
-    + onCashOut(playerId : int, amount : string) «planned»
-    + onUndo() «planned»
-    + onSettle() «planned»
+    + onBuyIn(playerId : int, amount : string) «stub»
+    + onCashOut(playerId : int, amount : string) «stub»
+    + onUndo() «stub»
+    + onSettle() «stub»
     - persist()
     - showStatus(text : string)
   }
@@ -103,6 +107,9 @@ package "core (logic)" <<Frame>> {
 
 package "storage" <<Frame>> {
   class SessionStore <<utility>> {
+    + {static} kSchemaVersion : int = 1
+    + {static} kFileExtension : string
+    --
     + {static} toJson(session : Session) : string
     + {static} fromJson(json : string) : Session
     + {static} save(session : Session, path : path)
@@ -127,9 +134,5 @@ SessionStore ..> Session : serializes
 note bottom of Money
   Free functions in namespace pokertab;
   drawn as a utility class.
-end note
-note left of Dashboard
-  App struct + handlers in app/main.cpp;
-  drawn as one boundary class.
 end note
 @enduml

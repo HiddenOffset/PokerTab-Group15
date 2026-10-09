@@ -47,7 +47,7 @@ target_include_directories(imgui PUBLIC
 )
 target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
 
-add_executable(pokertab WIN32 main.cpp)
+add_executable(pokertab WIN32 main.cpp dashboard.cpp)
 target_link_libraries(pokertab PRIVATE pokertab_core imgui)
 if(MSVC)
     # WIN32 above hides the console window; keep main() as the entry point.

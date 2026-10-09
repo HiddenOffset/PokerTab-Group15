@@ -5,10 +5,14 @@
 ```
 core/         UI-independent session logic (static library, NFR-12)
   include/pokertab/money.hpp          integer-cent money, parse/format
-  include/pokertab/session.hpp        Session, Player, Transaction
+  include/pokertab/transaction.hpp    one buy-in
+  include/pokertab/player.hpp         one player and their money
+  include/pokertab/session.hpp        the session: players, pot, add player
   include/pokertab/session_store.hpp  JSON save/load
   src/
-app/          Dear ImGui desktop dashboard (main.cpp)
+app/          Dear ImGui desktop app
+  dashboard.hpp / .cpp                the screen and the use case handlers
+  main.cpp                            window and frame loop
 tests/        Catch2 tests, one TEST_CASE per REQ acceptance criterion
 third_party/  vendored Catch2 v3 and nlohmann/json (no download needed)
 docs/         wireframes and design notes
@@ -67,12 +71,14 @@ Every change (create session, add player) is written immediately (REQ-4).
 
 ## Adding a requirement
 
-1. Add the logic to `core/` — never in `app/main.cpp`. The UI only calls
-   core and redraws.
+1. Add the logic to `core/` — never in `app/`. The UI only calls core and
+   redraws. One class per file, named after the class (see
+   `docs/uml/naming-contract.md` for owners).
 2. Add a `TEST_CASE("REQ-N: ...", "[REQ-N]")` in `tests/test_session.cpp`
    whose checks mirror the acceptance criterion in the RAD.
-3. Wire the control in `app/main.cpp`. Disabled placeholders already exist
-   for buy-in, cash-out, undo and settle.
+3. Wire the control in `app/dashboard.cpp`. The handlers `onBuyIn`,
+   `onCashOut`, `onUndo` and `onSettle` are empty stubs waiting for you;
+   the buttons are drawn disabled.
 4. Open a pull request. CI must be green before merge.
 
 Run one requirement's tests alone:

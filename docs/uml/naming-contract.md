@@ -1,13 +1,32 @@
 # Naming Contract
 
 The class, attribute, and method names every diagram and every source file
-must use. Source of truth is `core/include/pokertab/*.hpp`; this file
-records the names and marks what is implemented versus planned. If a name
-changes in code, change it here and in every diagram in the same pull
-request.
+must use. Source of truth is the code (`core/include/pokertab/*.hpp`,
+`app/dashboard.hpp`); this file records the names and marks what is
+implemented versus planned. If a name changes in code, change it here and in
+every diagram in the same pull request.
 
 Convention: classes `PascalCase`, methods and attributes `camelCase`,
 private members end in `_`, money is always `Cents` (int64, whole cents).
+One class per file, named after the class.
+
+## Shared classes and owners
+
+Only the owner changes a class's file. Everyone else uses it. Add a row the
+same day you need a class that is not here.
+
+| Class | File | Owner | Used By |
+| --- | --- | --- | --- |
+| Session | `core/include/pokertab/session.hpp` | David | David, Travis, Nishanth, Matthew |
+| Player | `core/include/pokertab/player.hpp` | David | David, Travis, Nishanth, Matthew |
+| Transaction | `core/include/pokertab/transaction.hpp` | Matthew | Travis, Matthew |
+| Money | `core/include/pokertab/money.hpp` | Matthew | David, Travis, Nishanth, Matthew |
+| SessionStore | `core/include/pokertab/session_store.hpp` | David | David, Travis, Nishanth, Matthew |
+| Settlement, Payment | `core/include/pokertab/settlement.hpp` (planned) | Matthew | Matthew |
+| Dashboard | `app/dashboard.hpp` | Nishanth | David, Travis, Nishanth, Matthew |
+
+Owners are proposed from the RAD roles; change them here if the team
+decides otherwise.
 
 ## Actors
 
@@ -18,13 +37,19 @@ private members end in `_`, money is always `Cents` (int64, whole cents).
 
 ## Use cases
 
-| Use case | Owner | REQ | Status |
-| --- | --- | --- | --- |
-| Create Session | Travis Trinidad | REQ-1, REQ-2 | Implemented |
-| Add Player | David Martindale | REQ-5, REQ-6 | Implemented |
-| Record Buy-in | Matthew Rohrer | REQ-9, REQ-10, REQ-11 | Planned |
-| Record Cash-out | Nishanth Mahendran | REQ-14, REQ-15 | Planned |
-| Settle Up | Shared | REQ-16, REQ-17, REQ-18 | Planned |
+Four slices and one shared use case. The shared one appears only in the
+merged use case diagram; nobody draws a sequence diagram for it.
+
+| Use case | Owner | Branch | REQ | Status |
+| --- | --- | --- | --- | --- |
+| Create Session | David Martindale | `david-create-session` | REQ-1, REQ-2 | Implemented |
+| Add Player | TBD | | REQ-5, REQ-6 | Implemented |
+| Record Buy-in | TBD | | REQ-9, REQ-10, REQ-11 | Planned |
+| Record Cash-out | TBD | | REQ-14, REQ-15 | Planned |
+| Settle Up | TBD | | REQ-16, REQ-17, REQ-18 | Planned |
+
+One of the four TBD rows is the shared use case. Decide at the next team
+meeting and fill in the owners and branches here.
 
 ## Classes
 
@@ -38,7 +63,7 @@ private members end in `_`, money is always `Cents` (int64, whole cents).
 In code these are free functions in `namespace pokertab`; the diagram shows
 them as a utility class.
 
-### `Transaction` — struct (`session.hpp`)
+### `Transaction` — struct (`transaction.hpp`)
 
 | Member | Status |
 | --- | --- |
@@ -46,7 +71,7 @@ them as a utility class.
 | `+timestamp: string` | Implemented |
 | `+amountCents: Cents` | Implemented |
 
-### `Player` — struct (`session.hpp`)
+### `Player` — struct (`player.hpp`)
 
 | Member | Status |
 | --- | --- |
@@ -83,11 +108,11 @@ them as a utility class.
 | `+addPlayer(name: string): optional<AddPlayerError>` | Implemented |
 | `+findPlayer(id: int): Player*` | Implemented |
 | `+potCents(): Cents` | Implemented |
-| `+recordBuyIn(playerId: int, cents: Cents): optional<BuyInError>` | Planned — Matthew |
-| `+recordCashOut(playerId: int, cents: Cents): optional<CashOutError>` | Planned — Nishanth |
-| `+undoLast(): bool` | Planned — Nishanth (REQ-22) |
-| `+cashOutTotalCents(): Cents` | Planned — shared |
-| `+isBalanced(): bool` | Planned — shared |
+| `+recordBuyIn(playerId: int, cents: Cents): optional<BuyInError>` | Planned — Record Buy-in owner |
+| `+recordCashOut(playerId: int, cents: Cents): optional<CashOutError>` | Planned — Record Cash-out owner |
+| `+undoLast(): bool` | Planned — REQ-22 |
+| `+cashOutTotalCents(): Cents` | Planned — Settle Up owner |
+| `+isBalanced(): bool` | Planned — Settle Up owner |
 
 `BuyInError` (`NoSuchPlayer`, `NotPositive`, `PlayerCashedOut`) and
 `CashOutError` (`NoSuchPlayer`, `Negative`, `AlreadyCashedOut`) are planned
@@ -97,6 +122,8 @@ enums beside `AddPlayerError`.
 
 | Member | Status |
 | --- | --- |
+| `+kSchemaVersion: int = 1` {static} | Implemented |
+| `+kFileExtension: string = ".pokertab.json"` {static} | Implemented |
 | `+toJson(session: Session): string` {static} | Implemented |
 | `+fromJson(json: string): Session` {static} | Implemented |
 | `+save(session: Session, path: path)` {static} | Implemented |
@@ -108,28 +135,31 @@ enums beside `AddPlayerError`.
 
 | Member | Status |
 | --- | --- |
-| `Payment { payer: string, payee: string, amountCents: Cents }` | Planned — shared |
-| `+compute(session: Session): vector<Payment>` {static} | Planned — shared |
+| `Payment { payer: string, payee: string, amountCents: Cents }` | Planned — Settle Up owner |
+| `+compute(session: Session): vector<Payment>` {static} | Planned — Settle Up owner |
 
 Greedy largest-debtor-to-largest-creditor algorithm (RAD Appendix A).
 
-### `Dashboard` — boundary (`app/main.cpp`)
+### `Dashboard` — boundary (`app/dashboard.hpp`)
 
-The ImGui screen. In code it is the `App` struct plus the free functions in
-`main.cpp`; the diagram shows them as one class.
+The one ImGui screen. Owns the current session; every handler calls core
+and then saves.
 
 | Member | Status |
 | --- | --- |
-| `-session: optional<Session>` | Implemented |
-| `-sessionPath: path` | Implemented |
-| `-status: string` | Implemented |
-| `+onCreateSession(name: string, defaultBuyIn: string)` | Implemented (`drawNewSessionDialog`) |
-| `+onOpenRecent(path: path)` | Implemented (`drawNewSessionDialog`) |
-| `+onAddPlayer(name: string)` | Implemented (`addPlayer`) |
-| `+onBuyIn(playerId: int, amount: string)` | Planned — Matthew |
-| `+onCashOut(playerId: int, amount: string)` | Planned — Nishanth |
-| `+onUndo()` | Planned — Nishanth |
-| `+onSettle()` | Planned — shared |
+| `-session_: optional<Session>` | Implemented |
+| `-sessionPath_: path` | Implemented |
+| `-newName_: string`, `-newDefaultBuyIn_: string`, `-newError_: string` | Implemented |
+| `-playerInput_: string`, `-playerError_: string` | Implemented |
+| `-status_: string`, `-statusUntil_: double` | Implemented |
+| `+draw(nowSeconds: double)` | Implemented |
+| `+onCreateSession(name: string, defaultBuyIn: string)` | Implemented |
+| `+onOpenRecent(path: path)` | Implemented |
+| `+onAddPlayer(name: string)` | Implemented |
+| `+onBuyIn(playerId: int, amount: string)` | Stub — Record Buy-in owner |
+| `+onCashOut(playerId: int, amount: string)` | Stub — Record Cash-out owner |
+| `+onUndo()` | Stub — REQ-22 |
+| `+onSettle()` | Stub — Settle Up owner |
 | `-persist()` | Implemented |
 | `-showStatus(text: string)` | Implemented |
 

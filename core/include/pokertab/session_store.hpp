@@ -29,6 +29,7 @@ namespace pokertab {
 class SessionStore {
 public:
     static constexpr int kSchemaVersion = 1;
+    static constexpr const char* kFileExtension = ".pokertab.json";
 
     // Serialize to / from a JSON string (no filesystem; used by tests and I/O).
     static std::string toJson(const Session& session);

@@ -1,0 +1,45 @@
+@startuml sequence
+' A2 slice — David Martindale — Create Session (REQ-1, REQ-2)
+' Participants are the three classes in classes.puml. Every call is a method
+' of the receiving class; returns are dashed.
+!include ../_style.iuml
+title Create Session (REQ-1, REQ-2)
+
+actor Accountant
+participant Dashboard
+participant Session
+participant SessionStore
+
+Accountant -> Dashboard : onCreateSession(name, defaultBuyIn)
+activate Dashboard
+
+alt name is blank or default buy-in is not a positive amount
+  Dashboard --> Accountant : error shown in dialog
+else valid
+  Dashboard -> Session : create(name)
+  activate Session
+  Session --> Dashboard : session (date = today)
+  deactivate Session
+
+  Dashboard -> Session : setDefaultBuyInCents(cents)
+
+  Dashboard -> SessionStore : pathFor(session)
+  activate SessionStore
+  SessionStore --> Dashboard : path
+  deactivate SessionStore
+
+  Dashboard -> Dashboard : persist()
+  Dashboard -> SessionStore : save(session, path)
+  activate SessionStore
+  SessionStore -> SessionStore : toJson(session)
+  SessionStore --> Dashboard
+  deactivate SessionStore
+
+  Dashboard -> Dashboard : showStatus("Created session")
+  Dashboard -> Session : name()
+  Dashboard -> Session : date()
+  Dashboard -> Session : potCents()
+  Dashboard --> Accountant : dashboard shows name, date,\n0 players, $0.00 pot
+end
+deactivate Dashboard
+@enduml
