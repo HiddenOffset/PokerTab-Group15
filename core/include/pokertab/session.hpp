@@ -1,6 +1,7 @@
 // ============================================================================
 // session.hpp — one poker session: players and their money
 // ----------------------------------------------------------------------------
+// Owner: David Martindale (naming contract).
 // Implements REQ-1 (create session) and REQ-5 / REQ-6 (add player, reject
 // duplicates). Buy-ins, cash-outs and settlement land in later REQs; the
 // data shape for them (Appendix B) is already here so those PRs only add
@@ -14,27 +15,9 @@
 #include <vector>
 
 #include "pokertab/money.hpp"
+#include "pokertab/player.hpp"
 
 namespace pokertab {
-
-struct Transaction {
-    int id = 0;
-    std::string timestamp;  // ISO-8601, local time
-    Cents amountCents = 0;
-};
-
-struct Player {
-    int id = 0;
-    std::string name;
-    std::vector<Transaction> transactions;  // buy-ins only
-    std::optional<Cents> cashOutCents;
-
-    Cents totalInCents() const;
-    int buyInCount() const { return static_cast<int>(transactions.size()); }
-    bool cashedOut() const { return cashOutCents.has_value(); }
-    // cash-out minus total in; 0 until cashed out
-    Cents netCents() const;
-};
 
 enum class AddPlayerError { EmptyName, DuplicateName };
 
