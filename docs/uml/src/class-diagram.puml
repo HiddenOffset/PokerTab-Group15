@@ -1,0 +1,135 @@
+@startuml class-diagram
+' Poker Tab — merged class diagram (PR2)
+' Names follow docs/uml/naming-contract.md. Methods marked «planned» are
+' not yet in code; everything else is in core/include/pokertab/*.hpp.
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #3A3A3A
+  BorderThickness 1.5
+  HeaderBackgroundColor #E8E8E4
+  AttributeFontSize 12
+}
+skinparam stereotype {
+  CBackgroundColor #DCDCD8
+}
+hide circle
+
+package "app (UI)" <<Frame>> {
+  class Dashboard <<boundary>> {
+    - session : optional<Session>
+    - sessionPath : path
+    - status : string
+    --
+    + onCreateSession(name : string, defaultBuyIn : string)
+    + onOpenRecent(path : path)
+    + onAddPlayer(name : string)
+    + onBuyIn(playerId : int, amount : string) «planned»
+    + onCashOut(playerId : int, amount : string) «planned»
+    + onUndo() «planned»
+    + onSettle() «planned»
+    - persist()
+    - showStatus(text : string)
+  }
+}
+
+package "core (logic)" <<Frame>> {
+  class Session {
+    - name_ : string
+    - date_ : string
+    - defaultBuyInCents_ : Cents
+    - players_ : vector<Player>
+    - nextPlayerId_ : int
+    - nextTransactionId_ : int
+    --
+    + {static} create(name : string) : Session
+    + {static} create(name : string, date : string) : Session
+    + name() : string
+    + date() : string
+    + defaultBuyInCents() : Cents
+    + setDefaultBuyInCents(c : Cents)
+    + players() : vector<Player>
+    + addPlayer(name : string) : optional<AddPlayerError>
+    + findPlayer(id : int) : Player*
+    + potCents() : Cents
+    + recordBuyIn(playerId : int, cents : Cents) : optional<BuyInError> «planned»
+    + recordCashOut(playerId : int, cents : Cents) : optional<CashOutError> «planned»
+    + undoLast() : bool «planned»
+    + cashOutTotalCents() : Cents «planned»
+    + isBalanced() : bool «planned»
+  }
+
+  class Player {
+    + id : int
+    + name : string
+    + transactions : vector<Transaction>
+    + cashOutCents : optional<Cents>
+    --
+    + totalInCents() : Cents
+    + buyInCount() : int
+    + cashedOut() : bool
+    + netCents() : Cents
+  }
+
+  class Transaction {
+    + id : int
+    + timestamp : string
+    + amountCents : Cents
+  }
+
+  enum AddPlayerError {
+    EmptyName
+    DuplicateName
+  }
+
+  class Money <<utility>> {
+    + {static} parseCents(text : string) : optional<Cents>
+    + {static} formatCents(cents : Cents) : string
+  }
+
+  class Settlement <<planned>> {
+    + {static} compute(session : Session) : vector<Payment>
+  }
+
+  class Payment <<planned>> {
+    + payer : string
+    + payee : string
+    + amountCents : Cents
+  }
+}
+
+package "storage" <<Frame>> {
+  class SessionStore <<utility>> {
+    + {static} toJson(session : Session) : string
+    + {static} fromJson(json : string) : Session
+    + {static} save(session : Session, path : path)
+    + {static} load(path : path) : Session
+    + {static} defaultSessionsDir() : path
+    + {static} pathFor(session : Session) : path
+  }
+}
+
+Session "1" *-- "0..*" Player : players_
+Player "1" *-- "0..*" Transaction : transactions
+Session ..> AddPlayerError : returns
+Settlement "1" *-- "0..*" Payment : produces
+Settlement ..> Session : reads
+
+Dashboard "1" --> "0..1" Session : current
+Dashboard ..> SessionStore : save / load
+Dashboard ..> Settlement : compute
+Dashboard ..> Money : parse / format
+SessionStore ..> Session : serializes
+
+note bottom of Money
+  Free functions in namespace pokertab;
+  drawn as a utility class.
+end note
+note left of Dashboard
+  App struct + handlers in app/main.cpp;
+  drawn as one boundary class.
+end note
+@enduml

@@ -1,0 +1,55 @@
+@startuml sequence-record-cash-out
+' Record Cash-out (REQ-14, REQ-15) — Nishanth Mahendran
+' Planned path; method names from docs/uml/naming-contract.md
+!include _style.iuml
+title Record Cash-out (REQ-14, REQ-15)
+
+actor Accountant
+participant Dashboard
+participant Money
+participant Session
+participant Player
+participant SessionStore
+
+Accountant -> Dashboard : onCashOut(playerId, amount)
+activate Dashboard
+
+Dashboard -> Money : parseCents(amount)
+activate Money
+Money --> Dashboard : optional<Cents>
+deactivate Money
+
+alt amount negative or non-numeric
+  Dashboard --> Accountant : "Enter a dollar amount of $0.00 or more"
+else valid amount
+  Dashboard -> Session : recordCashOut(playerId, cents)
+  activate Session
+  Session -> Session : findPlayer(playerId)
+
+  alt player not found or already cashed out
+    Session --> Dashboard : CashOutError
+    Dashboard --> Accountant : error message
+  else ok
+    Session -> Player : cashOutCents = cents
+    Session --> Dashboard : nullopt (success)
+    deactivate Session
+
+    Dashboard -> Dashboard : persist()
+    Dashboard -> SessionStore : save(session, sessionPath)
+    activate SessionStore
+    SessionStore --> Dashboard
+    deactivate SessionStore
+
+    Dashboard -> Player : netCents()
+    activate Player
+    Player -> Player : totalInCents()
+    Player --> Dashboard : cashOut − totalIn
+    deactivate Player
+
+    Dashboard -> Money : formatCents(net)
+    Dashboard -> Dashboard : showStatus("Recorded $X cash-out for name")
+    Dashboard --> Accountant : row shows cash-out and net;\nBuy-in button disabled for player (REQ-15)
+  end
+end
+deactivate Dashboard
+@enduml

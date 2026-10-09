@@ -1,0 +1,48 @@
+@startuml use-case-diagram
+' Poker Tab — merged use case diagram (PR2)
+' Render: java -jar plantuml.jar -tpng docs/uml/src/use-case-diagram.puml -o ../merged
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 14
+skinparam shadowing false
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F4F4F2
+  BorderColor #3A3A3A
+  BorderThickness 1.5
+}
+skinparam rectangle {
+  BackgroundColor white
+  BorderColor #3A3A3A
+  BorderThickness 2
+}
+left to right direction
+
+actor "Accountant" as accountant
+
+rectangle "Poker Tab" {
+  usecase "Create Session\n(REQ-1)" as UC1
+  usecase "Add Player\n(REQ-5)" as UC2
+  usecase "Record Buy-in\n(REQ-9)" as UC3
+  usecase "Record Cash-out\n(REQ-14)" as UC4
+  usecase "Settle Up\n(REQ-16, 17, 18)" as UC5
+  UC1 -[hidden]right- UC2
+  UC2 -[hidden]right- UC3
+  UC3 -[hidden]right- UC4
+  UC4 -[hidden]right- UC5
+}
+
+actor "Player" as player
+
+accountant --> UC1
+accountant --> UC2
+accountant --> UC3
+accountant --> UC4
+accountant --> UC5
+player --> UC5 : views result
+
+note right of UC5
+  Shared use case. Enabled only when
+  total buy-ins = total cash-outs.
+end note
+@enduml

@@ -1,0 +1,55 @@
+@startuml sequence-settle-up
+' Settle Up (REQ-16, REQ-17, REQ-18) — shared use case
+' Planned path; algorithm in RAD Appendix A
+!include _style.iuml
+title Settle Up (REQ-16, REQ-17, REQ-18)
+
+actor Accountant
+participant Dashboard
+participant Session
+participant Player
+participant Settlement
+participant Payment
+participant Money
+
+Accountant -> Dashboard : onSettle()
+activate Dashboard
+
+Dashboard -> Session : isBalanced()
+activate Session
+Session -> Session : potCents()
+Session -> Session : cashOutTotalCents()
+Session --> Dashboard : bool
+deactivate Session
+
+alt buy-ins ≠ cash-outs (REQ-16)
+  Dashboard -> Money : formatCents(pot − cashOuts)
+  Dashboard --> Accountant : "$X unaccounted for"; Settle stays disabled
+else balanced
+  Dashboard -> Settlement : compute(session)
+  activate Settlement
+
+  Settlement -> Session : players()
+  loop every player
+    Settlement -> Player : netCents()
+    Player --> Settlement : net
+  end
+  Settlement -> Settlement : split players by sign of net\ninto debtors and creditors
+
+  loop until no debtor or creditor remains (REQ-18)
+    Settlement -> Settlement : match largest debtor\nto largest creditor
+    create Payment
+    Settlement -> Payment : new (payer, payee,\namount = smaller of debt and credit)
+    Settlement -> Settlement : reduce both; drop any at 0
+  end
+
+  Settlement --> Dashboard : vector<Payment>
+  deactivate Settlement
+
+  loop every payment
+    Dashboard -> Money : formatCents(amountCents)
+  end
+  Dashboard --> Accountant : "Carol pays Alice $15.00" ... (REQ-17)
+end
+deactivate Dashboard
+@enduml

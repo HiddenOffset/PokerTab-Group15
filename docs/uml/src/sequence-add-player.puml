@@ -1,0 +1,46 @@
+@startuml sequence-add-player
+' Add Player (REQ-5, REQ-6) — David Martindale
+' Traces addPlayer() in app/main.cpp and Session::addPlayer() in core
+!include _style.iuml
+title Add Player (REQ-5, REQ-6)
+
+actor Accountant
+participant Dashboard
+participant Session
+participant Player
+participant SessionStore
+
+Accountant -> Dashboard : onAddPlayer(name)
+activate Dashboard
+
+Dashboard -> Session : addPlayer(name)
+activate Session
+Session -> Session : trimmed(name)
+
+alt name is blank
+  Session --> Dashboard : AddPlayerError::EmptyName
+  Dashboard --> Accountant : "Enter a player name."
+else name already on roster (case-insensitive)
+  Session --> Dashboard : AddPlayerError::DuplicateName
+  Dashboard --> Accountant : "name is already on the roster."
+else new name
+  create Player
+  Session -> Player : new (id = nextPlayerId_++, name)
+  Session -> Session : append player to players_
+  Session --> Dashboard : nullopt (success)
+  deactivate Session
+
+  Dashboard -> Dashboard : persist()
+  Dashboard -> SessionStore : save(session, sessionPath)
+  activate SessionStore
+  SessionStore --> Dashboard
+  deactivate SessionStore
+
+  Dashboard -> Dashboard : showStatus("Added name to the roster")
+  Dashboard -> Session : players()
+  Dashboard -> Player : totalInCents(), buyInCount(), netCents()
+  Player --> Dashboard : $0.00, 0, $0.00
+  Dashboard --> Accountant : roster shows new row
+end
+deactivate Dashboard
+@enduml
