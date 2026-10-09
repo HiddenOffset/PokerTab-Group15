@@ -1,0 +1,46 @@
+@startuml sequence-create-session
+' Create Session (REQ-1, REQ-2) — Travis Trinidad
+' Traces Dashboard::onCreateSession() in app/dashboard.cpp
+!include _style.iuml
+title Create Session (REQ-1)
+
+actor Accountant
+participant Dashboard
+participant Money
+participant Session
+participant SessionStore
+
+Accountant -> Dashboard : onCreateSession(name, defaultBuyIn)
+activate Dashboard
+
+Dashboard -> Money : parseCents(defaultBuyIn)
+activate Money
+Money --> Dashboard : optional<Cents>
+deactivate Money
+
+alt name empty or buy-in invalid
+  Dashboard --> Accountant : showStatus("Enter a session name.")
+else valid
+  Dashboard -> Session : create(name)
+  activate Session
+  Session --> Dashboard : session (date = today)
+  deactivate Session
+
+  Dashboard -> Session : setDefaultBuyInCents(cents)
+
+  Dashboard -> SessionStore : pathFor(session)
+  activate SessionStore
+  SessionStore --> Dashboard : path
+  deactivate SessionStore
+
+  Dashboard -> Dashboard : persist()
+  Dashboard -> SessionStore : save(session, path)
+  activate SessionStore
+  SessionStore -> SessionStore : toJson(session)
+  SessionStore --> Dashboard
+  deactivate SessionStore
+
+  Dashboard --> Accountant : dashboard shows name, date,\n0 players, $0.00 pot
+end
+deactivate Dashboard
+@enduml

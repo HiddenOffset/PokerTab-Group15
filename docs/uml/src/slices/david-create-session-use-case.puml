@@ -1,0 +1,27 @@
+@startuml use-case
+' A2 slice — David Martindale — Create Session
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 14
+skinparam shadowing false
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F4F4F2
+  BorderColor #3A3A3A
+  BorderThickness 1.5
+}
+skinparam rectangle {
+  BackgroundColor white
+  BorderColor #3A3A3A
+  BorderThickness 2
+}
+left to right direction
+
+actor "Accountant" as accountant
+
+rectangle "Poker Tab" {
+  usecase "Create Session\n(REQ-1, REQ-2)" as UC1
+}
+
+accountant --> UC1
+@enduml
