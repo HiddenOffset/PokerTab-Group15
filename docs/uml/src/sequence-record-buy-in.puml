@@ -1,0 +1,54 @@
+@startuml sequence-record-buy-in
+' Record Buy-in (REQ-9, REQ-10, REQ-11) — Matthew Rohrer
+' Planned path; method names from docs/uml/naming-contract.md
+!include _style.iuml
+title Record Buy-in (REQ-9, REQ-10, REQ-11)
+
+actor Accountant
+participant Dashboard
+participant Money
+participant Session
+participant Player
+participant Transaction
+participant SessionStore
+
+Accountant -> Dashboard : onBuyIn(playerId, amount)
+activate Dashboard
+
+Dashboard -> Money : parseCents(amount)
+activate Money
+Money --> Dashboard : optional<Cents>
+deactivate Money
+
+alt amount is zero, negative, non-numeric,\nor has more than two decimals (REQ-11)
+  Dashboard --> Accountant : "Enter a positive dollar amount, e.g. 20.00"
+else valid amount
+  Dashboard -> Session : recordBuyIn(playerId, cents)
+  activate Session
+  Session -> Session : findPlayer(playerId)
+
+  alt player not found or already cashed out
+    Session --> Dashboard : BuyInError
+    Dashboard --> Accountant : error message
+  else ok
+    create Transaction
+    Session -> Transaction : new (id = nextTransactionId_++,\ntimestamp = now, amountCents)
+    Session -> Session : append transaction to\nplayer.transactions
+    Session --> Dashboard : nullopt (success)
+    deactivate Session
+
+    Dashboard -> Dashboard : persist()
+    Dashboard -> SessionStore : save(session, sessionPath)
+    activate SessionStore
+    SessionStore --> Dashboard
+    deactivate SessionStore
+
+    Dashboard -> Money : formatCents(cents)
+    Dashboard -> Dashboard : showStatus("Recorded $X buy-in for name")
+    Dashboard -> Session : potCents()
+    Dashboard -> Player : totalInCents(), buyInCount()
+    Dashboard --> Accountant : row and pot updated (REQ-10)
+  end
+end
+deactivate Dashboard
+@enduml
