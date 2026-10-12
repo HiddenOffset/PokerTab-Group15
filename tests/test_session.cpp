@@ -98,9 +98,9 @@ TEST_CASE("REQ-8: at least 10 players fit in one session", "[REQ-8]") {
 // ---- REQ-2 / REQ-3: save and load ------------------------------------------
 
 namespace {
-std::filesystem::path tempFile(const char* name) {
-    return std::filesystem::temp_directory_path() / "pokertab_tests" / name;
-}
+    std::filesystem::path tempFile(const char* name) {
+        return std::filesystem::temp_directory_path() / "pokertab_tests" / name;
+    }
 }  // namespace
 
 TEST_CASE("REQ-2/REQ-3: save then load restores every player exactly", "[REQ-2][REQ-3]") {
@@ -109,8 +109,8 @@ TEST_CASE("REQ-2/REQ-3: save then load restores every player exactly", "[REQ-2][
     s.addPlayer("Alice");
     s.addPlayer("Bob");
     // simulate data later REQs will write, to prove the file carries it
-    s.players()[0].transactions.push_back({1, "2026-09-22T20:00:00", 2000});
-    s.players()[0].transactions.push_back({2, "2026-09-22T21:00:00", 2000});
+    s.players()[0].transactions.push_back({ 1, "2026-09-22T20:00:00", 2000 });
+    s.players()[0].transactions.push_back({ 2, "2026-09-22T21:00:00", 2000 });
     s.players()[1].cashOutCents = 3500;
 
     const auto path = tempFile("roundtrip.pokertab.json");
@@ -148,7 +148,7 @@ TEST_CASE("REQ-3: loading a missing or corrupt file throws instead of returning 
     std::filesystem::remove(bad);
 
     CHECK_THROWS_AS(SessionStore::fromJson(R"({"schema": 99, "name": "x", "date": "y", "players": []})"),
-                    std::runtime_error);
+        std::runtime_error);
 }
 
 // ---- Money (NFR-5 / REQ-11 groundwork) ------------------------------------
@@ -170,4 +170,76 @@ TEST_CASE("money: parse and format whole cents", "[money][REQ-11]") {
     CHECK(formatCents(5) == "$0.05");
     CHECK(formatCents(2050) == "$20.50");
     CHECK(formatCents(-1500) == "-$15.00");
+}
+
+//req-9: a successful buy-in changes only the selected player's totals
+TEST_CASE("REQ-9: initial buy-in updates the player and pot", "[REQ-9]")
+{
+    Session s = Session::create("Test", "2026-09-22");
+    REQUIRE_FALSE(s.addPlayer("Alice").has_value());
+    REQUIRE_FALSE(s.addPlayer("Bob").has_value());
+
+    REQUIRE_FALSE(s.recordBuyIn(1, "20.00").has_value());
+    const Player* alice = s.findPlayer(1);
+    REQUIRE(alice != nullptr);
+    CHECK(alice->totalInCents() == 2000);
+    CHECK(alice->buyInCount() == 1);
+    CHECK(alice->transactions.front().id == 1);
+    CHECK(alice->transactions.front().timestamp.size() == 19);
+    CHECK(s.findPlayer(2)->totalInCents() == 0);
+    CHECK(s.potCents() == 2000);
+    CHECK(s.nextTransactionId() == 2);
+}
+
+//req-10: every subsequent buy-in is counted as a re-buy
+TEST_CASE("REQ-10: additional buy-ins accumulate and keep distinct ids", "[REQ-10]")
+{
+    Session s = Session::create("Test", "2026-09-22");
+    REQUIRE_FALSE(s.addPlayer("Alice").has_value());
+    REQUIRE_FALSE(s.recordBuyIn(1, "20").has_value());
+    REQUIRE_FALSE(s.recordBuyIn(1, "20.00").has_value());
+    REQUIRE_FALSE(s.recordBuyIn(1, "10.00").has_value());
+
+    const Player* alice = s.findPlayer(1);
+    REQUIRE(alice != nullptr);
+    CHECK(alice->totalInCents() == 5000);
+    CHECK(alice->buyInCount() == 3);
+    CHECK(alice->buyInCount() - 1 == 2);
+    CHECK(alice->transactions[0].id == 1);
+    CHECK(alice->transactions[1].id == 2);
+    CHECK(alice->transactions[2].id == 3);
+    CHECK(s.potCents() == 5000);
+    CHECK(s.nextTransactionId() == 4);
+
+    //verify that the transaction counter survives a save and load
+    const Session loaded = SessionStore::fromJson(SessionStore::toJson(s));
+    REQUIRE(loaded.findPlayer(1) != nullptr);
+    CHECK(loaded.findPlayer(1)->totalInCents() == 5000);
+    CHECK(loaded.nextTransactionId() == 4);
+}
+
+//req-11: invalid input must leave all balances and ids unchanged
+TEST_CASE("REQ-11: invalid buy-ins record nothing", "[REQ-11]")
+{
+    Session s = Session::create("Test", "2026-09-22");
+    REQUIRE_FALSE(s.addPlayer("Alice").has_value());
+
+    CHECK(s.recordBuyIn(1, "-5") == BuyInError::InvalidAmount);
+    CHECK(s.recordBuyIn(1, "0") == BuyInError::InvalidAmount);
+    CHECK(s.recordBuyIn(1, "0.00") == BuyInError::InvalidAmount);
+    CHECK(s.recordBuyIn(1, "abc") == BuyInError::InvalidAmount);
+    CHECK(s.recordBuyIn(1, "10.001") == BuyInError::InvalidAmount);
+    CHECK(s.recordBuyIn(1, "") == BuyInError::InvalidAmount);
+    CHECK(s.recordBuyIn(99, "20") == BuyInError::PlayerNotFound);
+
+    REQUIRE(s.findPlayer(1) != nullptr);
+    CHECK(s.findPlayer(1)->transactions.empty());
+    CHECK(s.findPlayer(1)->totalInCents() == 0);
+    CHECK(s.potCents() == 0);
+    CHECK(s.nextTransactionId() == 1);
+
+    //valid input must still work after rejected attempts
+    REQUIRE_FALSE(s.recordBuyIn(1, "0.01").has_value());
+    CHECK(s.findPlayer(1)->totalInCents() == 1);
+    CHECK(s.nextTransactionId() == 2);
 }
