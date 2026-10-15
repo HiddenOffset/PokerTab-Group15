@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------
 // Owner: David Martindale (naming contract).
 // Implements REQ-1 (create session) and REQ-5 / REQ-6 (add player, reject
-// duplicates). Buy-ins, cash-outs and settlement land in later REQs; the
+// duplicates). Buy-ins and cash-outs land in later REQs; the
 // data shape for them (Appendix B) is already here so those PRs only add
 // methods.
 // ============================================================================

@@ -177,7 +177,6 @@ namespace pokertab {
         //look at the last session transactionId, see if it's buyIn or cashOut,
         //then do the opposite with the amount from that transaction
     }
-    //void Dashboard::onSettle() {}    // REQ-16, planned (REMOVED FROM REQUIREMENTS)
 
     // ---- frame -----------------------------------------------------------------
 
@@ -446,14 +445,13 @@ namespace pokertab {
 
         ImGui::Dummy(ImVec2(0, ImGui::GetContentRegionAvail().y - 150));
 
-        ImGui::BeginChild("settle", ImVec2(0, 0), ImGuiChildFlags_Borders);
+        ImGui::BeginChild("potInfo", ImVec2(0, 0), ImGuiChildFlags_Borders);
         ImGui::Text("Buy-ins      %s", formatCents(s.potCents()).c_str());
         Cents cashOuts = 0;
         for (const auto& p : s.players()) if (p.cashOutCents) cashOuts += *p.cashOutCents;
         ImGui::Text("Cash-outs    %s", formatCents(cashOuts).c_str());
         ImGui::Text("Unaccounted  %s", formatCents(s.potCents() - cashOuts).c_str());
         ImGui::BeginDisabled();
-        ImGui::Button("Settle up", ImVec2(-1, 44));
         ImGui::EndDisabled();
         ImGui::TextDisabled("Enabled when unaccounted = $0.00 (REQ-16).");
         ImGui::EndChild();

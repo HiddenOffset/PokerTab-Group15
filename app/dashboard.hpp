@@ -11,7 +11,6 @@
 //req-9, req-10 and req-11: record and validate player buy-ins
 //   onCashOut        Record Cash-out  (REQ-14)  planned
 //   onUndo           Corrections      (REQ-22)  planned
-//   (REMOVED) onSettle         Settle Up        (REQ-16)  planned
 // ============================================================================
 #pragma once
 
@@ -38,7 +37,6 @@ namespace pokertab {
         void onBuyIn(int playerId, const std::string& amount);
         void onCashOut(int playerId, const std::string& amount);  // planned
         void onUndo();                                            // planned
-        void onSettle();                                          // planned
 
         bool hasSession() const { return session_.has_value(); }
 
