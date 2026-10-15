@@ -21,6 +21,13 @@ namespace pokertab {
 
     enum class AddPlayerError { EmptyName, DuplicateName };
 
+
+    enum class RemovePlayerError {
+        PlayerNotFound,
+        HasTransactions
+
+    };
+
     //report an unsuccessful buy-in without changing the session
     enum class BuyInError
     {
@@ -48,6 +55,8 @@ namespace pokertab {
         // case-insensitive. Returns std::nullopt on success (the player is
         // players().back()), or the reason it was rejected.
         std::optional<AddPlayerError> addPlayer(std::string_view name);
+
+        std::optional<RemovePlayerError> removePlayer(int playerId);
 
         const Player* findPlayer(int id) const;
         Player* findPlayer(int id);

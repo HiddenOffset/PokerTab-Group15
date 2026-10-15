@@ -35,6 +35,7 @@ namespace pokertab {
         void onCreateSession(const std::string& name, const std::string& defaultBuyIn);
         void onOpenRecent(const std::filesystem::path& path);
         void onAddPlayer(const std::string& name);
+        void onRemovePlayer(int playerId);
         void onBuyIn(int playerId, const std::string& amount);
         void onCashOut(int playerId, const std::string& amount);  // planned
         void onUndo();                                            // planned
