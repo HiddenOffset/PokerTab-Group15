@@ -66,7 +66,7 @@ namespace pokertab {
         int selectedPlayerId_ = 0;
         std::string buyInAmount_ = "20.00";
         std::string buyInError_;
-        std::string cashOutAmount_;
+        std::string cashOutAmount_; // related to REQ-14
         std::string cashOutError_;
         std::string status_;        // confirmation strip (REQ-21)
         double statusUntil_ = 0;    // clock time when the strip clears
