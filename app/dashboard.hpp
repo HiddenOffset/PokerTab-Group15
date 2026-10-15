@@ -11,7 +11,7 @@
 //req-9, req-10 and req-11: record and validate player buy-ins
 //   onCashOut        Record Cash-out  (REQ-14)  planned
 //   onUndo           Corrections      (REQ-22)  planned
-//   onSettle         Settle Up        (REQ-16)  planned
+//   (REMOVED) onSettle         Settle Up        (REQ-16)  planned
 // ============================================================================
 #pragma once
 
@@ -68,6 +68,7 @@ namespace pokertab {
         int selectedPlayerId_ = 0;
         std::string buyInAmount_ = "20.00";
         std::string buyInError_;
+        std::string cashOutError_;
         std::string status_;        // confirmation strip (REQ-21)
         double statusUntil_ = 0;    // clock time when the strip clears
         double now_ = 0;
