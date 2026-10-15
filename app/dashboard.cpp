@@ -114,7 +114,7 @@ namespace pokertab {
         focusPlayerInput_ = true;
     }
 
-    //record the initial buy-in or an additional re-buy for a player
+    //REQ-9 record the initial buy-in or an additional re-buy for a player
     void Dashboard::onBuyIn(int playerId, const std::string& amount)
     {
         if (!session_)
@@ -148,9 +148,36 @@ namespace pokertab {
             " buy-in for " + player->name);
         persist();
     }
-    void Dashboard::onCashOut(int, const std::string&) {}  // REQ-14, planned
-    void Dashboard::onUndo() {}                            // REQ-22, planned
-    void Dashboard::onSettle() {}                          // REQ-16, planned
+    void Dashboard::onCashOut(int playerId, const std::string& amount) {    // REQ-14, planned
+            //handle errors
+            //take the given amount and add it to cashOutCents for playerId
+        /*
+        if (!session_)
+        {
+            assign cashout error
+            return;
+        }
+
+        const auto error = session_->(implement recordCashOut(playerId, amount) in session.cpp);
+        if(error){
+            switch (*error)
+            {
+
+            }
+            return;
+        }
+
+        selectedPlayerId_ = playerId;
+        const Player* player = session_->findPlayer(playerId);
+        showStatus("Recorded " + formatCents(player->transactions.back().amountCents) +
+            " cash-out for " + player->name);
+        */
+    }
+    void Dashboard::onUndo() {  // REQ-22, planned
+        //look at the last session transactionId, see if it's buyIn or cashOut,
+        //then do the opposite with the amount from that transaction
+    }
+    //void Dashboard::onSettle() {}    // REQ-16, planned (REMOVED FROM REQUIREMENTS)
 
     // ---- frame -----------------------------------------------------------------
 
