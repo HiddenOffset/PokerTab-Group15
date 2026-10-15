@@ -113,6 +113,38 @@ namespace pokertab {
         showStatus("Added " + name + " to the roster");
         focusPlayerInput_ = true;
     }
+    // Remove Player (REQ-7)
+    void Dashboard::onRemovePlayer(int playerId) {
+        if (!session_) {
+            return;
+        }
+
+        const Player* player = session_->findPlayer(playerId);
+        if (player == nullptr) {
+            showStatus("Player not found.");
+            return;
+        }
+
+        const std::string playerName = player->name;
+
+        if (auto error = session_->removePlayer(playerId)) {
+            if (*error == RemovePlayerError::HasTransactions) {
+                showStatus("Cannot remove " + playerName + " because they have buy-ins.");
+            } else {
+                showStatus("Player not found.");
+            }
+            return;
+        }
+
+        if (selectedPlayerId_ == playerId) {
+            selectedPlayerId_ = session_->players().empty()
+                ? 0
+                : session_->players().front().id;
+        }
+
+        persist();
+        showStatus("Removed " + playerName + " from the roster.");
+    }
 
     //REQ-9 record the initial buy-in or an additional re-buy for a player
     void Dashboard::onBuyIn(int playerId, const std::string& amount)
@@ -327,8 +359,10 @@ namespace pokertab {
             ImGui::TableSetupColumn("Total in");
             ImGui::TableSetupColumn("Cash-out");
             ImGui::TableSetupColumn("Net");
-            ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthStretch, 1.6f);
+            ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthStretch, 2.4f);
             ImGui::TableHeadersRow();
+
+            int playerToRemove = 0;
 
             for (const Player& p : s.players()) {
                 ImGui::TableNextRow();
@@ -346,13 +380,28 @@ namespace pokertab {
                 {
                     onBuyIn(p.id, buyInAmount_);
                 }
+
                 ImGui::SameLine();
-                if(ImGui::SmallButton("Cash-out"))
+                ImGui::BeginDisabled();
+                ImGui::SmallButton("Cash-out");
+                ImGui::EndDisabled();
+
+                ImGui::SameLine();
+                ImGui::BeginDisabled(!p.transactions.empty());
+
+                if (ImGui::SmallButton("Remove"))
                 {
-                    onCashOut(p.id, cashOutAmount_);
+                    playerToRemove = p.id;
                 }
+
+                ImGui::EndDisabled();
                 ImGui::PopID();
             }
+
+            if (playerToRemove != 0) {
+                onRemovePlayer(playerToRemove);
+            }
+
             if (s.players().empty()) {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();

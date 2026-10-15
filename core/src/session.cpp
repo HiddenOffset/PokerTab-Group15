@@ -93,6 +93,27 @@ namespace pokertab {
         return std::nullopt;
     }
 
+    std::optional<RemovePlayerError> Session::removePlayer(int playerId) {
+        auto playerIt = std::find_if(
+            players_.begin(),
+            players_.end(),
+            [playerId](const Player& player) {
+                return player.id == playerId;
+            }
+        );
+
+        if (playerIt == players_.end()) {
+            return RemovePlayerError::PlayerNotFound;
+        }
+
+        if (!playerIt->transactions.empty()) {
+            return RemovePlayerError::HasTransactions;
+        }
+
+        players_.erase(playerIt);
+        return std::nullopt;
+    }
+
     const Player* Session::findPlayer(int id) const {
         for (const auto& p : players_) if (p.id == id) return &p;
         return nullptr;
