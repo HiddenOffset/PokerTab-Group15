@@ -10,14 +10,13 @@ contribute: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 
 ## Status
 
-| Requirement | State |
-| --- | --- |
-| REQ-1 Create a session | Done — name, today's date, saved to disk |
-| REQ-2 / REQ-3 Save and load | Done — one JSON file per session |
-| REQ-5 / REQ-6 Add player, reject duplicates | Done |
-| REQ-9 Buy-ins and re-buys | Next |
-| REQ-14 Cash-outs | Next |
-| REQ-17 to REQ-19 Settlement | Planned |
+PokerTab as of 10/14/2026, is ready to be handed off to the next group. 
+
+## Features to fix/add to complete PokerTab
+-
+-
+-
+
 
 Wireframes: [docs/wireframes](docs/wireframes) · Screenshots: [docs/screenshots](docs/screenshots)
 
