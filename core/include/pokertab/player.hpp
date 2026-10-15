@@ -21,6 +21,7 @@ struct Player {
     std::optional<Cents> cashOutCents;
 
     Cents totalInCents() const;
+    Cents totalOutCents() const {return cashOutCents.value(); }
     int buyInCount() const { return static_cast<int>(transactions.size()); }
     bool cashedOut() const { return cashOutCents.has_value(); }
     // cash-out minus total in; 0 until cashed out

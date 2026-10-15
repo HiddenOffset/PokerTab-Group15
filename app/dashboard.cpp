@@ -146,7 +146,7 @@ namespace pokertab {
         showStatus("Removed " + playerName + " from the roster.");
     }
 
-    //record the initial buy-in or an additional re-buy for a player
+    //REQ-9 record the initial buy-in or an additional re-buy for a player
     void Dashboard::onBuyIn(int playerId, const std::string& amount)
     {
         if (!session_)
@@ -180,9 +180,35 @@ namespace pokertab {
             " buy-in for " + player->name);
         persist();
     }
-    void Dashboard::onCashOut(int, const std::string&) {}  // REQ-14, planned
-    void Dashboard::onUndo() {}                            // REQ-22, planned
-    void Dashboard::onSettle() {}                          // REQ-16, planned
+    void Dashboard::onCashOut(int playerId, const std::string& amount) {    // REQ-14, planned
+            //handle errors
+            //take the given amount and add it to cashOutCents for playerId
+        /*
+        if (!session_)
+        {
+            assign cashout error
+            return;
+        }
+
+        const auto error = session_->(implement recordCashOut(playerId, amount) in session.cpp);
+        if(error){
+            switch (*error)
+            {
+
+            }
+            return;
+        }
+
+        selectedPlayerId_ = playerId;
+        const Player* player = session_->findPlayer(playerId);
+        showStatus("Recorded " + formatCents(player->transactions.back().amountCents) +
+            " cash-out for " + player->name);
+        */
+    }
+    void Dashboard::onUndo() {  // REQ-22, planned
+        //look at the last session transactionId, see if it's buyIn or cashOut,
+        //then do the opposite with the amount from that transaction
+    }
 
     // ---- frame -----------------------------------------------------------------
 
@@ -469,14 +495,13 @@ namespace pokertab {
 
         ImGui::Dummy(ImVec2(0, ImGui::GetContentRegionAvail().y - 150));
 
-        ImGui::BeginChild("settle", ImVec2(0, 0), ImGuiChildFlags_Borders);
+        ImGui::BeginChild("potInfo", ImVec2(0, 0), ImGuiChildFlags_Borders);
         ImGui::Text("Buy-ins      %s", formatCents(s.potCents()).c_str());
         Cents cashOuts = 0;
         for (const auto& p : s.players()) if (p.cashOutCents) cashOuts += *p.cashOutCents;
         ImGui::Text("Cash-outs    %s", formatCents(cashOuts).c_str());
         ImGui::Text("Unaccounted  %s", formatCents(s.potCents() - cashOuts).c_str());
         ImGui::BeginDisabled();
-        ImGui::Button("Settle up", ImVec2(-1, 44));
         ImGui::EndDisabled();
         ImGui::TextDisabled("Enabled when unaccounted = $0.00 (REQ-16).");
         ImGui::EndChild();
