@@ -481,8 +481,11 @@ namespace pokertab {
         }
         ImGui::EndDisabled();
         ImGui::SameLine();
-        ImGui::BeginDisabled();
-        ImGui::Button("Cash-out", ImVec2(-1, 40));
+        ImGui::BeginDisabled(selectedPlayerId_ == 0 || s.findPlayer(selectedPlayerId_) == nullptr);
+        if(ImGui::Button("Cash-out", ImVec2(-1, 40)))
+        {
+            onCashOut(selectedPlayerId_, buyInAmount_);
+        }
         ImGui::EndDisabled();
 
         if (!buyInError_.empty())
