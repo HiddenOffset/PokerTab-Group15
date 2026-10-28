@@ -8,6 +8,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 
@@ -241,5 +242,25 @@ TEST_CASE("REQ-11: invalid buy-ins record nothing", "[REQ-11]")
     //valid input must still work after rejected attempts
     REQUIRE_FALSE(s.recordBuyIn(1, "0.01").has_value());
     CHECK(s.findPlayer(1)->totalInCents() == 1);
+    CHECK(s.nextTransactionId() == 2);
+}
+
+TEST_CASE("REQ-11: overly-large buy-ins record nothing", "[REQ-11]")
+{
+    Session s = Session::create("Test", "2026-06-07");
+    REQUIRE_FALSE(s.addPlayer("sixseven").has_value());
+
+    CHECK(s.recordBuyIn(1, "9999999999999") == pokertab::BuyInError::AmountTooLarge);
+    CHECK(s.recordBuyIn(1, "9999999999999.99") == pokertab::BuyInError::AmountTooLarge);
+
+    REQUIRE(s.findPlayer(1) != nullptr);
+    CHECK(s.findPlayer(1)->transactions.empty());
+    CHECK(s.findPlayer(1)->totalInCents() == 0);
+    CHECK(s.potCents() == 0);
+    CHECK(s.nextTransactionId() == 1);
+
+    // valid input must still work after rejected attempts
+    REQUIRE_FALSE(s.recordBuyIn(1, "999999999999.99").has_value());
+    CHECK(s.findPlayer(1)->totalInCents() == 99999999999999);
     CHECK(s.nextTransactionId() == 2);
 }
