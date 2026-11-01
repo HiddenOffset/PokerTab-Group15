@@ -163,7 +163,7 @@ Include at least one requirement of each status. The unconfirmed ones and suspec
 | CR-1 | The system shall |  |  |  |  |
 | CR-2 | The system shall |  |  |  |  |
 | CR-3 | The system shall |  |  |  |  |
-| CR-4 | The system shall |  |  |  |  |
+| CR-4 | The system shall allow players to be added and implemented into a poker session | functional | app/dashboard.cpp—>Dashboard::onAddPlayer()  core/src/session.cpp → Session::addPlayer() | Confirmed | In an already going poker session, inputting a name of a player shall return a std::nullopt and will add the name of the player to the session   |
 | CR-5 | The system shall |  |  |  |  |
 
 ## **Part 6: Three unit test cases**
