@@ -160,11 +160,11 @@ Include at least one requirement of each status. The unconfirmed ones and suspec
 
 | ID | Candidate requirement | Type | Source | Status | Acceptance Criterion |
 | :---- | :---- | :---- | :---- | :---- | :---- |
-| CR-1 | The system shall |  |  |  |  |
-| CR-2 | The system shall |  |  |  |  |
-| CR-3 | The system shall |  |  |  |  |
-| CR-4 | The system shall |  |  |  |  |
-| CR-5 | The system shall |  |  |  |  |
+| CR-1 | The system shall reject overly-large buy-ins. | Functional | app/dashboard.cpp \-\> onBuyIn() \-\> core/src/session.cpp \-\> recordBuyIn()  | Suspected bug | On a large enough singular buy-in, the system displays “Buy-in is too large for this session” |
+| CR-2 | The system shall create a poker session when the user submits a session name and valid buy-in amount. | Functional | app/dashbaord.cpp—\>Dashboard::onCreateSession→ core/src/session.cpp→session::create() | Confirmed | Will create the session.  |
+| CR-3 | The system shall allow a player with no buy-ins to be removed | Functional | app/dashboard.cpp-\>onRemovePlayer()-\>core/src/session.cpp-\>removePlayer() | Confirmed | The player will be removed from the players\_ vector in session and the GUI will display “Removed \[player\] from the roster” |
+| CR-4 | The system shall allow for players to be added and implemented in a session | Functional | app/dashbaord.cpp—\>Dashboard::onAddPlayer()  core/src/session.cpp → Session::addPlayer() | Confirmed  | This will ask for the player's name once the player name is added and it will appear in the session |
+| CR-5 | The system shall let a player cash-out | Functional | app/dashboard.cpp-\>onCashOut()-\>core/src/session.cpp-\>recordCashOut() | Confirmed | A player that has bought-in will be recorded as cashed out with no option for any future buy-ins or removal. |
 
 ## **Part 6: Three unit test cases**
 
@@ -197,9 +197,9 @@ You only need to write the test cases, not run them. If your team writes real te
 
 | ID | Requirement | Kind | Input | Expected output | Predicted result today |
 | :---- | :---- | :---- | :---- | :---- | :---- |
-| TC-1 |  |  |  |  |  |
-| TC-2 |  |  |  |  |  |
-| TC-3 |  |  |  |  |  |
+| TC-1 | CR-3 | Negative | player Test;Test-\>transactions.empty() \== false | removePlayer::HasTransactions | Pass, but no automated test exists |
+| TC-2 | CR-3 | Positive | Session s; // freshplayer Test;Test-\>transactions.expmty() \== true | s-\>players\_.empty() \== true | Pass, but no automated test exists |
+| TC-3 | CR-1 | Negative, Boundary | recordBuyIn(1, 9999999999999.99) | BuyInError::AmountTooLarge | Pass, but the wrong error is thrown |
 
 ## **Grading checklist**
 
