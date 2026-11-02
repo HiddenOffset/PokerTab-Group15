@@ -164,7 +164,7 @@ Include at least one requirement of each status. The unconfirmed ones and suspec
 | CR-2 | The system shall |  |  |  |  |
 | CR-3 | The system shall |  |  |  |  |
 | CR-4 | The system shall |  |  |  |  |
-| CR-5 | The system shall |  |  |  |  |
+| CR-5 | The system shall let a player cash-out | Functional |app/dashboard.cpp->onCashOut()->core/src/session.cpp->recordCashOut()  | unconfirmed | A player that has bought-in will be recorded as cashed out with no option for any future buy-ins or removal. |
 
 ## **Part 6: Three unit test cases**
 
