@@ -69,7 +69,7 @@ Include any of these that exist:
 
 ***![][image1]***
 
-## **Part 3: Trace the clickz**
+## **Part 3: Trace the click**
 
 Follow your one user action from the button click to the database and back. Minimum five hops. Every row needs a real file path and function name. Add rows as needed.
 
