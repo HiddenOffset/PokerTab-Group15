@@ -8,6 +8,7 @@
 #include <chrono>
 #include <ctime>
 #include <limits>
+#include <regex>
 
 namespace pokertab {
 
@@ -134,7 +135,16 @@ namespace pokertab {
         }
 
         const auto cents = parseCents(amount);
-        if (!cents || *cents <= 0)
+
+        if (!cents) {
+            static const std::regex dollarFormat(R"(\$?([0-9]+(\.[0-9]{0,2})?|\.[0-9]{1,2}))");
+
+            return std::regex_match(trimmed(amount), dollarFormat)
+                ? BuyInError::AmountTooLarge
+                : BuyInError::InvalidAmount;
+        }
+
+        if (*cents <= 0)
         {
             return BuyInError::InvalidAmount;
         }
