@@ -1,14 +1,14 @@
-# Testable Requirements: [Project Name]
+# Testable Requirements: PokerTab
 
-**Team number:** [XX]
-**Inherited from:** Team [XX]
+**Team number:** 1
+**Inherited from:** Team 15
 
 ## Who Owns What
 
 | Area of the system | Owner | ID prefix |
 |---|---|---|
-| [example: Accounts and login] | [name] | [initials, like MG] |
-| | | |
+| Transactions | Russell Nguyen | RN |
+| Frontend | Mason Randall | MR |
 | | | |
 | | | |
 
@@ -23,27 +23,27 @@ RULES
 
 ---
 
-## Section: [Your Area] ([Your Name])
+## Section: Transactions (Russell Nguyen)
 
 ### Stakeholder Goals
 
 | ID | Stakeholder | Goal |
 |---|---|---|
-| G-XX-01 | | |
+| G-RN-01 | Accountant | Keep accurate transactions of players that have both entered and exited the games so that everyone gets pays what they lose or gets paid out what they win. |
 
 ### Functional Requirements
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| REQ-XX-01 | | | |
-| REQ-XX-02 | | | |
-| REQ-XX-03 | | | |
+| REQ-RN-01 | The system shall let a player cash-out. | Confirmed | CR-5 |
+| REQ-RN-02 | The system shall let the most recent transaction be reversible. | Confirmed | New |
+| REQ-RN-03 | The system shall reject buy-ins of $100,000,000,000.00+. | Suspected Bug | CR-1 |
 
 ### Non-Functional Requirements
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| NFR-XX-01 | | | |
+| NFR-RN-01 | The system shall let the accountant know in clear terms why a checkout failed using error enums, such as Player Not Found, Invalid Amount, or Amount Too Large. | Usability | CR-5 |
 
 ### Example of a Good Rewrite
 
