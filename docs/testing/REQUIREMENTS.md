@@ -102,7 +102,7 @@ RULES
 
 ---
 
-## Section: [Your Area] ([Your Name])
+## Section: [] ([Mason Randall])
 
 ### Stakeholder Goals
 
@@ -114,8 +114,8 @@ RULES
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| | | | |
-| | | | |
+| NEW | The System Shall uses color to distinguish positive from negative | | |
+| New | The system shall Compute and display each player's net as cash-out minus total buy-ins| | |
 | | | | |
 
 ### Non-Functional Requirements
