@@ -29,9 +29,9 @@ HOW TO USE THIS FILE
 - Player name: empty string 
 
 **Steps:**
-1.Open/create a session
-2.find add player button and add wihtout a name
-3.Click add player
+1. Open/create a session
+2. find add player button and add wihtout a name
+3. Click add player
 
 **Expected result:** The player is not added, displays "Enter Player Name"
 **Actual result:** States to enter a players name otherwise it will not appear empty 
@@ -55,10 +55,10 @@ HOW TO USE THIS FILE
 - dollar amount: 1 Valid
 
 **Steps:**
-1.Open/create a session
-2.Enter a value that is negative dollar value 1
-3.Enter a value 0 dollar value
-4.Enter a value positive dollar value 1
+1. Open/create a session
+2. Enter a value that is negative dollar value 1
+3. Enter a value 0 dollar value
+4. Enter a value positive dollar value 1
 
 **Expected result:** Negative dollar value should display that you need to input a positive dollar value with at most 2 decimals. Then an input of 0 should say the same thing. Inputting a dollar value of 1 or above displays the amount with no error 
 **Actual result:** Negative dollar value displays the prompt above as well as putting zero and putting 1 dollar value inputs it into the session
@@ -81,10 +81,10 @@ HOW TO USE THIS FILE
 -Cash out amount: 10.00
 
 **Steps:**
-1.Open/Create new session
-2.Input postive dollar amount
-3.Take out dollar amount
-4.Should display net in a color green or red depenidng on the net value
+1. Open/Create new session
+2. Input postive dollar amount
+3. Take out dollar amount
+4. Should display net in a color green or red depenidng on the net value
 
 **Expected result:** Display green if the number is postive and red if it is negative net value 
 **Actual result:** The app does not display the negative values in red or the postive in green
