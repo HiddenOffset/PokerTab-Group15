@@ -65,7 +65,7 @@ HOW TO USE THIS FILE
 **Status:** Pass
 **Severity:** N/A
 **V or V:** N/A
-**GitHub Issue:**
+**GitHub Issue:** N/A
 
 ---
 
@@ -118,6 +118,6 @@ HOW TO USE THIS FILE
 **Status:** pass
 **Severity:** N/A
 **V or V:** N/A
-**GitHub Issue:**
+**GitHub Issue:** N/A
 
 ---
