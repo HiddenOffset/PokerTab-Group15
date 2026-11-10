@@ -21,8 +21,8 @@ HOW TO USE THIS FILE
 **Test ID:** TC-MR-01
 **From Part 6:** (old test number, or New) New
 **Written by:** Mason Randall
-**Title:** Creating a session with an empty name of user 
-**Traces to:** REQ-MR-01
+**Title:** Creating a session with an empty name of user and rejcting empty player name  
+**Traces to:** REQ-MR-02
 **Test type:** (Unit / Integration / System / Acceptance / Boundary Value / Negative / Security) Negative
 **Preconditions:** It should not run and block the input stating "Input a user name"
 **Test data:**
@@ -50,9 +50,9 @@ HOW TO USE THIS FILE
 **Test type:** Boundary Value 
 **Preconditions:** Testing any negative dollar value -1/ 0/ and 1 $  
 **Test data:**
-- dollar amount: -1
-- dollar amount: 0
-- dollar amount: 1
+- dollar amount: -1 Reject 
+- dollar amount: 0 Reject 
+- dollar amount: 1 Valid
 
 **Steps:**
 1.Open/create a session
@@ -108,8 +108,10 @@ HOW TO USE THIS FILE
 
 **Steps:**
 1. Read the readme
-2.Create a session with a valid name and dollar amount
-3.press enter to create the sesion
+2. Create a session with a valid name and dollar amount
+3. Record Buy-in with a postive dollar amount
+4. press enter to create the sesion
+5. The balance should show along with the session name the amount of money in the pot and the players
 
 **Expected result:** Display session with the valid name and dollar amount
 **Actual result:** Display the session with the valid name and dollar amount
