@@ -42,7 +42,7 @@ if(POKERTAB_BUILD_TESTS)
     add_library(catch2 STATIC third_party/catch2/catch_amalgamated.cpp)
     target_include_directories(catch2 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/third_party/catch2)
 
-    add_executable(pokertab_tests tests/test_session.cpp)
+    add_executable(pokertab_tests tests/test_session.cpp tests/test_russell_transactions.cpp)
     target_link_libraries(pokertab_tests PRIVATE pokertab_core catch2)
     add_test(NAME pokertab_tests COMMAND pokertab_tests --reporter compact)
 endif()
