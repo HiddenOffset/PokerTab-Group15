@@ -102,7 +102,7 @@ RULES
 
 ---
 
-## Section: Frontend (Mason Randall)
+## Section: [Frontend] ([Mason Randall])
 
 ### Stakeholder Goals
 
