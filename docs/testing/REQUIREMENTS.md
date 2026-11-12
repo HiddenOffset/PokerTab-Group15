@@ -102,24 +102,24 @@ RULES
 
 ---
 
-## Section: [Your Area] ([Your Name])
+## Section: Frontend (Mason Randall)
 
 ### Stakeholder Goals
 
 | ID | Stakeholder | Goal |
 |---|---|---|
-| | | |
+| G-MR-01 | Poker session creator | Will manage the session and players inside the session while displaying the balance of players on the dashboard |
 
 ### Functional Requirements
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
+| REQ-MR-01| The system shall create a poker session when the user submits a session name and valid buy-in amount | Confirmed | CR-2 |
+| REQ-MR-02| The system shall allow for players with a non-empty name to be added and implemented in a session | Confirmed | CR-4 |
+| REQ-MR-03| The system shall compute and display each player's net as cash-out minus total buy-ins | Confirmed | new |
 
 ### Non-Functional Requirements
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| | | | |
+| NFR-MR-01 | The system shall display a dashboard and show positive net amounts in green and negative net amounts in red when losing money without needing to calculate manually | Suspected bug | new |
