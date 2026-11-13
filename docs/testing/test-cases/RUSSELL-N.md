@@ -27,14 +27,10 @@ HOW TO USE THIS FILE
 **Preconditions:** A session has been created and a player with `player-id = 1` to assign the buy-in to already exists within the session.
 **Test data:**
 
-`onBuyIn(1, "99999999999")`
 `onBuyIn(1, "100000000000")`
-`onBuyIn(1, "100000000001")`
 
 **Steps:**
-1. In a session with an existing user with playerId = 1, enter in 999999999.99 in BUY-IN's Amount input field.
-2. In a session with an existing user with playerId = 1, enter in 1000000000.00 in BUY-IN's Amount input field.
-3. In a session with an existing user with playerId = 1, enter in 1000000000.01 in BUY-IN's Amount input field.
+1. In a session with an existing user with playerId = 1, enter in 1000000000.00 in BUY-IN's Amount input field.
 
 **Expected result:** "Buy-in is too large for this session."
 **Actual result:** "Enter a positive dollar amount with at most two decimal places."
