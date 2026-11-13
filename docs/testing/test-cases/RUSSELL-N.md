@@ -21,7 +21,7 @@ HOW TO USE THIS FILE
 **Test ID:** RN-01
 **From Part 6:** TC-3
 **Written by:** Russell N
-**Title:** 100 Trillion in single buy-in gets rejected
+**Title:** 100 Trillion in single buy-in gets rejected with AmountTooLarge error
 **Traces to:** NFR-RN-01
 **Test type:** Integration, Negative, Boundary
 **Preconditions:** A session has been created and a player with `player-id = 1` to assign the buy-in to already exists within the session.
