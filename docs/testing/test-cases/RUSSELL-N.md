@@ -32,8 +32,8 @@ HOW TO USE THIS FILE
 **Steps:**
 1. In a session with an existing user with playerId = 1, enter in 1000000000.00 in BUY-IN's Amount input field.
 
-**Expected result:** "Buy-in is too large for this session."
-**Actual result:** "Enter a positive dollar amount with at most two decimal places."
+**Expected result:** "Buy-in is too large for this session." displayed as an error message in the BUY-IN window
+**Actual result:** "Enter a positive dollar amount with at most two decimal places." displayed as an error message in the BUY-IN window
 **Status:** Fail
 **Severity:** Minor
 **V or V:** Verification
