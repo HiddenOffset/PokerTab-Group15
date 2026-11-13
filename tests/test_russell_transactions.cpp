@@ -51,6 +51,7 @@ TEST_CASE("RN-01: oversized buy-ins report AmountTooLarge and change nothing",
     CHECK(s.nextTransactionId() == 1);
 }
 
+// TODO: change test to use onCashOut/recordCashOut as well so that many methods can be tested together
 TEST_CASE("RN-02: a player buys in and cashes out with exact totals",
           "[RN][RN-02][G-RN-01][REQ-RN-01][acceptance]") {
     Session s = Session::create("Test", "2026-11-12");
@@ -80,6 +81,7 @@ TEST_CASE("RN-02: a player buys in and cashes out with exact totals",
     CHECK(player->buyInCount() == 1);
 }
 
+// TODO: change test case to test only recordCashOut when it is implemented
 TEST_CASE("RN-03: a second cash-out is rejected without changing the first",
           "[RN][RN-03][NFR-RN-01][unit][security]") {
     Session s = Session::create("Test", "2026-11-12");
