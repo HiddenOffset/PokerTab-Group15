@@ -43,7 +43,7 @@ RULES
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| NFR-RN-01 | The system shall let the accountant know in clear terms why a checkout failed using error enums, such as Player Not Found, Invalid Amount, or Amount Too Large. | Usability | CR-5 |
+| NFR-RN-01 | The system shall let the accountant know in clear terms why a cash-out failed using error enums, such as Player Not Found, Invalid Amount, or Amount Too Large. | Usability | CR-5 |
 
 ### Example of a Good Rewrite
 
