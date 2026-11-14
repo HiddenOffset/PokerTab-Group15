@@ -9,7 +9,7 @@
 |---|---|---|
 | Transactions | Russell Nguyen | RN |
 | Frontend | Mason Randall | MR |
-| | | |
+| Backend | Eric Miao | EM |
 | | | |
 
 <!--
@@ -78,7 +78,7 @@ RULES
 
 ---
 
-## Section: [Your Area] ([Your Name])
+## Section: [Backend] ([Eric Miao])
 
 ### Stakeholder Goals
 
