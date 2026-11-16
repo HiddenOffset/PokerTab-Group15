@@ -18,10 +18,10 @@ Fill this in **after** everyone's work is merged. One row per requirement.
 | REQ-MR-02 | CR-4 | Mason | TC-MR-01 | 1 Pass | N/A |
 | REQ-MR-03 | New | Mason | None | N/A | N/A |
 | NFR-MR-01 | New | Mason | TC-MR-03 | 1 Fail | #76 |
-| | | | | | |
-| | | | | | |
-| | | | | | |
-| | | | | | |
+| REQ-SN-01 | CR-4 | Seyar | None | N/A | N/A |
+| REQ-SN-02 | CR-3 | Seyar | SN-01, SN-02 | 2 pass | N/A |
+| REQ-SN-03 | New | Seyar | SN-03 | 1 Pass | N/A |
+| NFR-SN-01| New | Seyar | None | N/A | N/A |
 | | | | | | |
 | | | | | | |
 | | | | | | |
