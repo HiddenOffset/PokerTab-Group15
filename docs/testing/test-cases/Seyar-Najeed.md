@@ -14,7 +14,7 @@
 **Preconditions:** A session is open and a player named Test has been added without making a buy-in.
 **Test data:**
 
-`Player name: Test`
+`Player name: Eric`
 
 **Steps:**
 1. Create a new session.
@@ -36,7 +36,7 @@
 **Preconditions:** A session is open and a player named Test has made a buy-in.
 **Test data:**
 
-`Player name: Test`
+`Player name: Seyar`
 `Buy-in: $20.00`
 
 **Steps:**
@@ -60,7 +60,7 @@
 **Preconditions:** A session is open with at least one player who has made a buy-in.
 **Test data:**
 
-`Player name: Test`
+`Player name: Mason`
 `Buy-in: $20.00`
 
 **Steps:**
@@ -84,7 +84,7 @@
 **Preconditions:** The PokerTab application is open.
 **Test data:**
 
-`Player name: test`
+`Player name: Russell`
 
 **Steps:**
 1. Open or create a session.
