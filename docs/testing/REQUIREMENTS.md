@@ -10,7 +10,7 @@
 | Transactions | Russell Nguyen | RN |
 | Frontend | Mason Randall | MR |
 | Backend | Eric Miao | EM |
-| | | |
+| Player Management| Seyar Najeed | SN |
 
 <!--
 RULES
@@ -54,28 +54,35 @@ RULES
 
 ---
 
-## Section: [Your Area] ([Your Name])
+## Section: Player Management (Seyar Najeed)
 
 ### Stakeholder Goals
 
 | ID | Stakeholder | Goal |
 |---|---|---|
-| | | |
+| G-SN-01 | Poker Session Organizer | Manage players during a poker session so the correct players are included. |
+
 
 ### Functional Requirements
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
+| REQ-SN-01 | The system shall show the players who are currently in a poker session. | Confirmed | New |
+| REQ-SN-02 | The system shall allow a player to be removed from a session if they have no buy-in transactions | Confirmed | CR-3 |
+| REQ-SN-03 | The system shall allow the session organizer to view a player's information.| Confirmed | New |
 
 ### Non-Functional Requirements
 
 | ID | Requirement | Status | From Part 5 |
 |---|---|---|---|
-| | | | |
+| NFR-SN-01 | The system shall make player information easy to read and understand on the dashboard. | Confirmed | New |
 
+### Example of a Good Rewrite
+
+| ID | Requirement | Status | From Part 5 |
+|---|---|---|---|
+| REQ-SN-01 | The system shall display the names of all players currently added to a poker session. | Confirmed | New |
+| NFR-SN-01 | The dashboard shall display player information clearly so the organizer can identify each player. | The dashboard shall display player information clearly so the organizer can identify each player. | Confirmed | New |
 ---
 
 ## Section: [Backend] ([Eric Miao])
