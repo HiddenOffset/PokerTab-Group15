@@ -18,12 +18,50 @@ HOW TO USE THIS FILE
 
 ---
 
-**Test ID:**
+**Test ID:** EM-01
+**From Part 6:** (old test number, or New)
+**Written by:** ERIC
+**Title:** Backend writes to a file
+**Traces to:** core/src/session_store.cpp
+**Test type:** System
+**Preconditions:** nil
+**Test data:** nil
+
+**Steps:**
+1. Run the application
+2. Save the work
+
+**Expected result:** A file is created
+**Actual result:** A file is indeed created
+**Status:** Pass
+
+---
+
+**Test ID:** EM-02
+**From Part 6:** (old test number, or New)
+**Written by:** Eric
+**Title:** The file includes data from the previous session
+**Traces to:** core/src/session_store.cpp
+**Test type:** System
+**Preconditions:** a file was already saved
+**Test data:** the already saved file
+
+**Steps:**
+1. Run the application
+2. Attempt to load a previous save
+
+**Expected result:** The previous save is loaded
+**Actual result:** The previous save is loaded
+**Status:** PAsS
+
+---
+
+**Test ID:** 
 **From Part 6:** (old test number, or New)
 **Written by:**
 **Title:**
 **Traces to:**
-**Test type:** (Unit / Integration / System / Acceptance / Boundary Value / Negative / Security)
+**Test type:**
 **Preconditions:**
 **Test data:**
 
@@ -34,56 +72,10 @@ HOW TO USE THIS FILE
 
 **Expected result:**
 **Actual result:**
-**Status:** (Pass / Fail)
+**Status:**
 **Severity:** (Critical / Major / Minor, Fail only)
 **V or V:** (Verification / Validation, Fail only)
 **GitHub Issue:** (#number, Fail only)
-
----
-
-**Test ID:**
-**From Part 6:** (old test number, or New)
-**Written by:**
-**Title:**
-**Traces to:**
-**Test type:**
-**Preconditions:**
-**Test data:**
-
-**Steps:**
-1.
-2.
-3.
-
-**Expected result:**
-**Actual result:**
-**Status:**
-**Severity:**
-**V or V:**
-**GitHub Issue:**
-
----
-
-**Test ID:**
-**From Part 6:** (old test number, or New)
-**Written by:**
-**Title:**
-**Traces to:**
-**Test type:**
-**Preconditions:**
-**Test data:**
-
-**Steps:**
-1.
-2.
-3.
-
-**Expected result:**
-**Actual result:**
-**Status:**
-**Severity:**
-**V or V:**
-**GitHub Issue:**
 
 ---
 
