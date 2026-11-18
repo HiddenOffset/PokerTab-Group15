@@ -8,6 +8,7 @@
 #include <chrono>
 #include <ctime>
 #include <limits>
+#include <regex>
 
 namespace pokertab {
 
@@ -134,7 +135,21 @@ namespace pokertab {
         }
 
         const auto cents = parseCents(amount);
-        if (!cents || *cents <= 0)
+
+        // i have to check whether the overflow guard in money.cpp's parseCents is triggered or not through regex
+        // although it might be better to simply just get rid of parseCents and lean on regex
+        // that's a refactor question though
+        if (!cents)
+        {
+            static const std::regex dollarFormat(
+                R"(\$?([0-9]+(\.[0-9]{0,2})?|\.[0-9]{1,2}))");
+
+            return std::regex_match(trimmed(amount), dollarFormat)
+                ? BuyInError::AmountTooLarge
+                : BuyInError::InvalidAmount;
+        }
+
+        if (*cents <= 0)
         {
             return BuyInError::InvalidAmount;
         }
