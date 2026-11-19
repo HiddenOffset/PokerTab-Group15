@@ -74,6 +74,10 @@ namespace pokertab {
         //return std::nullopt on success or an error without adding a transaction
         std::optional<BuyInError> recordBuyIn(int playerId, std::string_view amount);
 
+        // record a cash-out using a validated operation
+        // return std::nullopt on success or an error without changing a player's cashOutCents
+        std::optional<CashOutError> recordCashOut(int playerId, std::string_view amount);
+
         // REQ-26: sum of every buy-in in the session
         Cents potCents() const;
 
