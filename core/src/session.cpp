@@ -174,4 +174,35 @@ namespace pokertab {
         return pot;
     }
 
+    std::optional<CashOutError> Session::recordCashOut(int playerId, std::string_view amount) {
+        Player* player = findPlayer(playerId);
+        if (player == nullptr) {
+            return CashOutError::PlayerNotFound;
+        }
+
+        // add a guard for a player that is already cashed out
+
+        const auto cents = parseCents(amount);
+
+        // same guard as recordBuyIn
+        if (!cents) {
+            static const std::regex dollarFormat(
+                R"(\$?([0-9]+(\.[0-9]{0,2})?|\.[0-9]{1,2}))");
+
+            return std::regex_match(trimmed(amount), dollarFormat)
+                ? CashOutError::AmountTooLarge
+                : CashOutError::InvalidAmount;
+        }
+
+        if (*cents <= 0) {
+            return CashOutError::InvalidAmount;
+        }
+
+        if (*cents > potCents()) {
+            return CashOutError::AmountTooLarge;
+        }
+
+        player->cashOutCents = cents;
+        return std::nullopt;
+    }
 }  // namespace pokertab
