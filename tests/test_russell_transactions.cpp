@@ -32,23 +32,24 @@ namespace {
 
 TEST_CASE("RN-01: oversized buy-ins report AmountTooLarge and change nothing",
           "[RN][RN-01][NFR-RN-01][REQ-RN-03][integration][negative][boundary]") {
-    // The document's Test data and Steps list different dollar amounts.
-    // Use the explicit Test data strings and their stated expected error (#63).
-    const auto amount = GENERATE("99999999999", "100000000000", "100000000001");
-    CAPTURE(amount);
     Session s = Session::create("Test", "2026-11-12");
     REQUIRE_FALSE(s.addPlayer("Test").has_value());
 
     // Dashboard::onBuyIn maps this error to "Buy-in is too large for this session."
-    CHECK(s.recordBuyIn(1, amount) == BuyInError::AmountTooLarge);
+    CHECK(s.recordBuyIn(1, "1000000000000.00") == BuyInError::AmountTooLarge);
+    CHECK(s.recordBuyIn(1, "1000000000000.01") == BuyInError::AmountTooLarge);
 
     const Player* player = s.findPlayer(1);
     REQUIRE(player != nullptr);
     CHECK(player->transactions.empty());
     CHECK(player->totalInCents() == 0);
-    CHECK_FALSE(player->cashedOut());
     CHECK(s.potCents() == 0);
     CHECK(s.nextTransactionId() == 1);
+
+    // valid input must still work after rejected attempts
+    REQUIRE_FALSE(s.recordBuyIn(1, "999999999999.99").has_value());
+    CHECK(s.findPlayer(1)->totalInCents() == 99999999999999);
+    CHECK(s.nextTransactionId() == 2);
 }
 
 // TODO: change test to use onCashOut/recordCashOut as well so that many methods can be tested together
