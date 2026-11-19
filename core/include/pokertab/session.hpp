@@ -36,6 +36,14 @@ namespace pokertab {
         AmountTooLarge
     };
 
+    //report an unsuccessful cash-out without changing the session
+    enum class CashOutError
+    {
+        PlayerNotFound,
+        InvalidAmount,
+        AmountTooLarge
+    };
+
     class Session {
     public:
         // REQ-1: new empty session with a user-supplied name and the current date.
