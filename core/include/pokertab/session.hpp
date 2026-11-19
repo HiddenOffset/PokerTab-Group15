@@ -39,6 +39,7 @@ namespace pokertab {
     //report an unsuccessful cash-out without changing the session
     enum class CashOutError
     {
+        AlreadyCashedOut,
         PlayerNotFound,
         InvalidAmount,
         AmountTooLarge
