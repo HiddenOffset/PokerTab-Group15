@@ -180,7 +180,9 @@ namespace pokertab {
             return CashOutError::PlayerNotFound;
         }
 
-        // add a guard for a player that is already cashed out
+        if (player->cashOutCents != 0) {
+            return CashOutError::AlreadyCashedOut;
+        }
 
         const auto cents = parseCents(amount);
 
