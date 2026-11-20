@@ -17,6 +17,7 @@ namespace pokertab {
 
     namespace {
         const ImVec4 kErrorRed(0.85f, 0.25f, 0.25f, 1);
+        const ImVec4 kPositiveGreen(0.20f, 0.75f, 0.35f, 1); //This is added for the green color
     }
 
     Dashboard::Dashboard() { refreshRecent(); }
@@ -353,7 +354,7 @@ namespace pokertab {
         const float tableHeight = ImGui::GetContentRegionAvail().y - 110;
         if (ImGui::BeginTable("roster", 7, flags, ImVec2(0, tableHeight))) {
             ImGui::TableSetupScrollFreeze(0, 1);
-            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch, 2.0f);
+            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch, 2.0f); 
             ImGui::TableSetupColumn("Buy-ins");
             ImGui::TableSetupColumn("Re-buys");
             ImGui::TableSetupColumn("Total in");
@@ -367,14 +368,35 @@ namespace pokertab {
             for (const Player& p : s.players()) {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn(); ImGui::TextUnformatted(p.name.c_str());
+                
+
+
                 ImGui::TableNextColumn(); ImGui::Text("%d", p.buyInCount());
                 //only transactions after the first count as re-buys
                 ImGui::TableNextColumn(); ImGui::Text("%d", std::max(0, p.buyInCount() - 1));
                 ImGui::TableNextColumn(); ImGui::TextUnformatted(formatCents(p.totalInCents()).c_str());
                 ImGui::TableNextColumn();
                 ImGui::TextUnformatted(p.cashedOut() ? formatCents(*p.cashOutCents).c_str() : "-");
-                ImGui::TableNextColumn(); ImGui::TextUnformatted(formatCents(p.netCents()).c_str());
+               // ImGui::TableNextColumn(); ImGui::TextUnformatted(formatCents(p.netCents()).c_str()); Commented out for now 
+               // ImGui::TableNextColumn(); Commented out for now
+
+                //This will be working on the color coded changes
                 ImGui::TableNextColumn();
+
+                const Cents net = p.netCents(); //Calculate the cash-out and total buy-ins
+
+                if (net > 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, kPositiveGreen); //If the player got money it will be green
+                }
+                else if (net < 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, kErrorRed); //player loses money it will become red
+                }
+                ImGui::TextUnformatted(formatCents(net).c_str());
+
+                if (net != 0) {
+					ImGui::PopStyleColor(); //This will put it into netural colors when drawing a nonzero value. So no color here
+                }
+				//End of color coded changes
                 ImGui::PushID(p.id);
                 if (ImGui::SmallButton("Buy-in"))
                 {
