@@ -16,9 +16,29 @@ namespace fs = std::filesystem;
 namespace pokertab {
 
     namespace {
-        const ImVec4 kErrorRed(0.85f, 0.25f, 0.25f, 1);
+        const ImVec4 kErrorRed(0.85f, 0.25f, 0.25f, 1); //Red values
         const ImVec4 kPositiveGreen(0.20f, 0.75f, 0.35f, 1); //This is added for the green color
+
+        //This is going to be for the ... when the name is too long
+        std::string displayNameForColumn(const std::string& name, float maxWidth) {
+            if (ImGui::CalcTextSize(name.c_str()).x <= maxWidth) {
+                return name;
+            }
+            //This will remove the last character until it can be ...
+            std::string shortened = name;
+
+            while (shortened.size() > 3) {
+                shortened.pop_back();
+                //This will check for the name shortened and make it to an ...
+                const std::string candidate = shortened + "...";
+                if (ImGui::CalcTextSize(candidate.c_str()).x <= maxWidth) {
+                    return candidate; //spelling error loll
+                }
+            }
+            return "..."; //
+        }
     }
+	//end of the ... for the name column
 
     Dashboard::Dashboard() { refreshRecent(); }
 
@@ -354,7 +374,7 @@ namespace pokertab {
         const float tableHeight = ImGui::GetContentRegionAvail().y - 110;
         if (ImGui::BeginTable("roster", 7, flags, ImVec2(0, tableHeight))) {
             ImGui::TableSetupScrollFreeze(0, 1);
-            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch, 2.0f); 
+			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 220.0f); //changed the stretch to fixed and then change 2.0 to 220.0f to make the name column wider
             ImGui::TableSetupColumn("Buy-ins");
             ImGui::TableSetupColumn("Re-buys");
             ImGui::TableSetupColumn("Total in");
@@ -367,8 +387,14 @@ namespace pokertab {
 
             for (const Player& p : s.players()) {
                 ImGui::TableNextRow();
-                ImGui::TableNextColumn(); ImGui::TextUnformatted(p.name.c_str());
-                
+                //ImGui::TableNextColumn(); ImGui::TextUnformatted(p.name.c_str()); This is out for the ...
+				//This is still for the ... for the name column
+                ImGui::TableNextColumn();
+
+                const std::string displayName =
+                    displayNameForColumn(p.name, ImGui::GetContentRegionAvail().x);
+                ImGui::TextUnformatted(displayName.c_str());
+                //end of fixed code
 
 
                 ImGui::TableNextColumn(); ImGui::Text("%d", p.buyInCount());
