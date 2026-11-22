@@ -32,10 +32,10 @@ namespace pokertab {
                 //This will check for the name shortened and make it to an ...
                 const std::string candidate = shortened + "...";
                 if (ImGui::CalcTextSize(candidate.c_str()).x <= maxWidth) {
-                    return candidate; //spelling error loll
+                    return candidate; 
                 }
             }
-            return "..."; //
+            return "..."; 
         }
     }
 	//end of the ... for the name column
@@ -387,15 +387,18 @@ namespace pokertab {
 
             for (const Player& p : s.players()) {
                 ImGui::TableNextRow();
-                //ImGui::TableNextColumn(); ImGui::TextUnformatted(p.name.c_str()); This is out for the ...
-				//This is still for the ... for the name column
+				
+                //This is still for the ... for the name column
+				//This is so it can be showed in the table and not be too long
                 ImGui::TableNextColumn();
-
+               
+                //This will shorten name for the table if it becomes too wide
                 const std::string displayName =
                     displayNameForColumn(p.name, ImGui::GetContentRegionAvail().x);
+                 
+                //This will show the name
                 ImGui::TextUnformatted(displayName.c_str());
                 //end of fixed code
-
 
                 ImGui::TableNextColumn(); ImGui::Text("%d", p.buyInCount());
                 //only transactions after the first count as re-buys
@@ -403,8 +406,6 @@ namespace pokertab {
                 ImGui::TableNextColumn(); ImGui::TextUnformatted(formatCents(p.totalInCents()).c_str());
                 ImGui::TableNextColumn();
                 ImGui::TextUnformatted(p.cashedOut() ? formatCents(*p.cashOutCents).c_str() : "-");
-               // ImGui::TableNextColumn(); ImGui::TextUnformatted(formatCents(p.netCents()).c_str()); Commented out for now 
-               // ImGui::TableNextColumn(); Commented out for now
 
                 //This will be working on the color coded changes
                 ImGui::TableNextColumn();
