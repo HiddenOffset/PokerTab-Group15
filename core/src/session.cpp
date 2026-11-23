@@ -134,6 +134,11 @@ namespace pokertab {
             return BuyInError::PlayerNotFound;
         }
 
+        if (player->cashedOut())
+        {
+            return BuyInError::AlreadyCashedOut;
+        }
+
         const auto cents = parseCents(amount);
 
         // i have to check whether the overflow guard in money.cpp's parseCents is triggered or not through regex
@@ -170,12 +175,46 @@ namespace pokertab {
 
     Cents Session::potCents() const {
         Cents pot = 0;
-        for (const auto& p : players_) pot += p.totalInCents();
+        for (const auto& p : players_) {
+            pot += p.totalInCents();
+            if (p.cashedOut()) {
+                pot -= p.totalOutCents();
+            }
+        }
         return pot;
     }
 
-    std::optional<BuyInError> Session::recordCashOut(int playerId, std::string_view amount) {
-        // mock for the tests
+    std::optional<CashOutError> Session::recordCashOut(int playerId, std::string_view amount) {
+        Player* player = findPlayer(playerId);
+        if (player == nullptr) {
+            return CashOutError::PlayerNotFound;
+        }
+
+        if (player->cashedOut()) {
+            return CashOutError::AlreadyCashedOut;
+        }
+
+        const auto cents = parseCents(amount);
+
+        // same guard as recordBuyIn
+        if (!cents) {
+            static const std::regex dollarFormat(
+                R"(\$?([0-9]+(\.[0-9]{0,2})?|\.[0-9]{1,2}))");
+
+            return std::regex_match(trimmed(amount), dollarFormat)
+                ? CashOutError::AmountTooLarge
+                : CashOutError::InvalidAmount;
+        }
+
+        if (*cents <= 0) {
+            return CashOutError::InvalidAmount;
+        }
+
+        if (*cents > potCents()) {
+            return CashOutError::AmountTooLarge;
+        }
+
+        player->cashOutCents = *cents;
         return std::nullopt;
     }
 

@@ -31,6 +31,16 @@ namespace pokertab {
     //report an unsuccessful buy-in without changing the session
     enum class BuyInError
     {
+        AlreadyCashedOut,
+        PlayerNotFound,
+        InvalidAmount,
+        AmountTooLarge
+    };
+
+    //report an unsuccessful cash-out without changing the session
+    enum class CashOutError
+    {
+        AlreadyCashedOut,
         PlayerNotFound,
         InvalidAmount,
         AmountTooLarge
@@ -69,7 +79,7 @@ namespace pokertab {
         Cents potCents() const;
 
         //mock for the tests, will be fixed later
-        std::optional<BuyInError> recordCashOut(int playerId, std::string_view amount);
+        std::optional<CashOutError> recordCashOut(int playerId, std::string_view amount);
 
         // Next ids handed out by the session; persisted so reloads stay unique.
         int nextPlayerId() const { return nextPlayerId_; }
