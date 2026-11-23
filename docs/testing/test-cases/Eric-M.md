@@ -59,7 +59,7 @@ HOW TO USE THIS FILE
 **Test ID:** EM-03
 **From Part 6:** (old test number, or New)
 **Written by:** Eric
-**Title:** filename sanatization handles collisions by overwriting silently
+**Title:** New sessions with identical names are handled gracefully
 **Traces to:** session_store.cpp
 **Test type:** System
 **Preconditions:** An existing session save
@@ -77,25 +77,24 @@ HOW TO USE THIS FILE
 
 ---
 
-**Test ID:**
+**Test ID:** EM-03
 **From Part 6:** (old test number, or New)
-**Written by:**
-**Title:**
-**Traces to:**
-**Test type:**
-**Preconditions:**
+**Written by:** Eric Miao
+**Title:** Only .pokertab.json files are shown
+**Traces to:** Dashboard.cpp
+**Test type:** Integration
+**Preconditions:** Random other .json files exist in pokertab/sessions directory
 **Test data:**
 
 **Steps:**
-1.
-2.
-3.
+1. Create random non pokertab json files in pokertab/sessions like pokertab/sessions/fjdskahf.json
+2. See if they are listed on the New Session/load session screen
 
-**Expected result:**
-**Actual result:**
-**Status:**
-**Severity:**
-**V or V:**
-**GitHub Issue:**
+**Expected result:** Only .pokertab.json files are shown
+**Actual result:** all .json files are shown
+**Status:** fail
+**Severity:** Minor
+**V or V:** Validation
+**GitHub Issue:** #102
 
 ---
