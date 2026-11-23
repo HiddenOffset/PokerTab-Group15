@@ -214,7 +214,7 @@ namespace pokertab {
             return;
         }
 
-        const auto error = session_->(implement recordCashOut(playerId, amount) in session.cpp);
+        const auto error = session_->recordCashOut(playerId, amount);
         if(error){
             switch (*error)
             {
