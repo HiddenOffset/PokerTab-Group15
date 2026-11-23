@@ -31,6 +31,7 @@ namespace pokertab {
     //report an unsuccessful buy-in without changing the session
     enum class BuyInError
     {
+        AlreadyCashedOut,
         PlayerNotFound,
         InvalidAmount,
         AmountTooLarge

@@ -134,6 +134,11 @@ namespace pokertab {
             return BuyInError::PlayerNotFound;
         }
 
+        if (player->cashedOut())
+        {
+            return BuyInError::AlreadyCashedOut;
+        }
+
         const auto cents = parseCents(amount);
 
         // i have to check whether the overflow guard in money.cpp's parseCents is triggered or not through regex
