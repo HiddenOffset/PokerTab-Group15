@@ -56,48 +56,45 @@ HOW TO USE THIS FILE
 
 ---
 
-**Test ID:** 
+**Test ID:** EM-03
 **From Part 6:** (old test number, or New)
-**Written by:**
-**Title:**
-**Traces to:**
-**Test type:**
-**Preconditions:**
+**Written by:** Eric
+**Title:** New sessions with identical names are handled gracefully
+**Traces to:** session_store.cpp
+**Test type:** System
+**Preconditions:** An existing session save
 **Test data:**
 
 **Steps:**
-1.
-2.
-3.
+1. Create a session with an identical name as an existing session
 
-**Expected result:**
-**Actual result:**
-**Status:**
-**Severity:** (Critical / Major / Minor, Fail only)
-**V or V:** (Verification / Validation, Fail only)
-**GitHub Issue:** (#number, Fail only)
+**Expected result:** The system throws an error saying a session with that name already exists
+**Actual result:** The old session is overwritten silently
+**Status:** fail
+**Severity:** Major
+**V or V:** Verification
+**GitHub Issue:** #101
 
 ---
 
-**Test ID:**
+**Test ID:** EM-03
 **From Part 6:** (old test number, or New)
-**Written by:**
-**Title:**
-**Traces to:**
-**Test type:**
-**Preconditions:**
+**Written by:** Eric Miao
+**Title:** Only .pokertab.json files are shown
+**Traces to:** Dashboard.cpp
+**Test type:** Integration
+**Preconditions:** Random other .json files exist in pokertab/sessions directory
 **Test data:**
 
 **Steps:**
-1.
-2.
-3.
+1. Create random non pokertab json files in pokertab/sessions like pokertab/sessions/fjdskahf.json
+2. See if they are listed on the New Session/load session screen
 
-**Expected result:**
-**Actual result:**
-**Status:**
-**Severity:**
-**V or V:**
-**GitHub Issue:**
+**Expected result:** Only .pokertab.json files are shown
+**Actual result:** all .json files are shown
+**Status:** fail
+**Severity:** Minor
+**V or V:** Validation
+**GitHub Issue:** #102
 
 ---
