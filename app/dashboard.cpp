@@ -92,6 +92,7 @@ namespace pokertab {
         selectedPlayerId_ = 0;
         buyInAmount_ = formatCents(*buyIn).substr(1);
         buyInError_.clear();
+        cashOutError_.clear();
         newError_.clear();
         persist();
         showStatus("Created session \"" + name + "\"");
@@ -107,6 +108,7 @@ namespace pokertab {
             selectedPlayerId_ = session_->players().empty() ? 0 : session_->players().front().id;
             buyInAmount_ = formatCents(session_->defaultBuyInCents()).substr(1);
             buyInError_.clear();
+            cashOutError_.clear();
             newError_.clear();
             showStatus("Opened " + path.filename().string());
         }
@@ -233,9 +235,11 @@ namespace pokertab {
         }
 
         selectedPlayerId_ = playerId;
+        cashOutError_.clear();
         const Player* player = session_->findPlayer(playerId);
         showStatus("Recorded " + formatCents(player->transactions.back().amountCents) +
             " cash-out for " + player->name);
+        persist();
     }
     void Dashboard::onUndo() {  // REQ-22, planned
         //look at the last session transactionId, see if it's buyIn or cashOut,
@@ -253,6 +257,7 @@ namespace pokertab {
                         session_.reset();
                         selectedPlayerId_ = 0;
                         buyInError_.clear();
+                        cashOutError_.clear();
                         newName_.clear();
                         refreshRecent();
                     }
