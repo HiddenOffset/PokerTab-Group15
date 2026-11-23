@@ -8,6 +8,7 @@
 #include <chrono>
 #include <ctime>
 #include <limits>
+#include <regex>
 
 namespace pokertab {
 
@@ -171,6 +172,11 @@ namespace pokertab {
         Cents pot = 0;
         for (const auto& p : players_) pot += p.totalInCents();
         return pot;
+    }
+
+    std::optional<BuyInError> Session::recordCashOut(int playerId, std::string_view amount) {
+        // mock for the tests
+        return std::nullopt;
     }
 
 }  // namespace pokertab

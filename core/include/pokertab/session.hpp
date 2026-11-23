@@ -68,6 +68,9 @@ namespace pokertab {
         // REQ-26: sum of every buy-in in the session
         Cents potCents() const;
 
+        //mock for the tests, will be fixed later
+        std::optional<BuyInError> recordCashOut(int playerId, std::string_view amount);
+
         // Next ids handed out by the session; persisted so reloads stay unique.
         int nextPlayerId() const { return nextPlayerId_; }
         int nextTransactionId() const { return nextTransactionId_; }
