@@ -48,3 +48,5 @@ recent sessions shows only .pokertab.json | code bug | https://github.com/Hidden
 
 
 ## 6. Sprint Summary
+
+We fixed several problems, including problems with sessions, removing players, buy-ins, cash-outs, and recent sessions. The fixes we made are passing their tests, but the cash-out feature still needs some work. Right now, only one cash-out button works and the error messages still need to be connected to the UI. For the next sprint, we'll work on our new feature and try to finish up the remaining issues.
