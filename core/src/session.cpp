@@ -180,7 +180,7 @@ namespace pokertab {
             return CashOutError::PlayerNotFound;
         }
 
-        if (!(player->cashOutCents.has_value())) {
+        if (player->cashedOut()) {
             return CashOutError::AlreadyCashedOut;
         }
 
