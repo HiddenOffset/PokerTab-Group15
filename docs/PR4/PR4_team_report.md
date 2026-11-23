@@ -6,6 +6,7 @@
 ## 1. Bug Triage Table
 
 |Test name| Bucket | Issue link | Severity | Priority | Owner | Status |
+|---------|---------|-----------|-----------|----------|-------|-------|
 |Duplicate session names| Code bug |https://github.com/HiddenOffset/PokerTab-Group15/issues/95| Medium | Medium | Seyar | Fixed |
 |Remove button not working| Code bug |https://github.com/HiddenOffset/PokerTab-Group15/issues/100| Medium | Medium | Seyar | Fixed |
 |100 Trillion in single buy-in gets rejected with AmountTooLarge error | Code | https://github.com/HiddenOffset/PokerTab-Group15/issues/63 | Low | Low | Russell | Fixed |
