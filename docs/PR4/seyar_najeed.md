@@ -1,6 +1,6 @@
 **Name of person who fixed bug:** Seyar Najeed
 
-**Bug that was fixed #1:** Session name overrides previous work
+**Bug that was fixed #64:** Session name overrides previous work
 
 -Issue: [GitHub Issue #64](https://github.com/HiddenOffset/PokerTab-Group15/issues/64)
 -Pull Request: 
