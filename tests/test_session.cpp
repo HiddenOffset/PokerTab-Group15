@@ -243,3 +243,15 @@ TEST_CASE("REQ-11: invalid buy-ins record nothing", "[REQ-11]")
     CHECK(s.findPlayer(1)->totalInCents() == 1);
     CHECK(s.nextTransactionId() == 2);
 }
+
+// Bug #95: duplicate session names should not overwrite saved sessions
+TEST_CASE("Bug 95 - duplicate session names do not overwrite files", "[BUG-95]")
+{
+    Session first = Session::create("Sunday Game", "2026-11-22");
+    Session second = Session::create("Sunday Game", "2026-11-22");
+
+    auto firstPath = SessionStore::pathFor(first);
+    auto secondPath = SessionStore::pathFor(second);
+
+    CHECK(firstPath != secondPath);
+}
