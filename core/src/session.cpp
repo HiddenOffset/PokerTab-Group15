@@ -175,7 +175,12 @@ namespace pokertab {
 
     Cents Session::potCents() const {
         Cents pot = 0;
-        for (const auto& p : players_) pot += p.totalInCents();
+        for (const auto& p : players_) {
+            pot += p.totalInCents();
+            if (p.cashedOut()) {
+                pot -= p.totalOutCents();
+            }
+        }
         return pot;
     }
 
@@ -209,7 +214,7 @@ namespace pokertab {
             return CashOutError::AmountTooLarge;
         }
 
-        player->cashOutCents = cents;
+        player->cashOutCents = *cents;
         return std::nullopt;
     }
 
