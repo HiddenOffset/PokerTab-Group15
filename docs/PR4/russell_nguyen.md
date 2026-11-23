@@ -26,10 +26,10 @@
 -Priority: [High]
 
 #Before the fix
-![before the fix](screenshots/russell_nguyen_issue_94_before.png)
+![before the fix](screenshots/russell_nguyen_issue94_before.png)
 
 #After the fix
-![after the fix](screenshots/russell_nguyen_issue_94_after.png)
+![after the fix](screenshots/russell_nguyen_issue94_after.png)
 
 **Type Of Bug**: This was a code bug because the button for cashing out on the UI did nothing, which is something the user would expect when clicking on the "Cash-out" button.
 
