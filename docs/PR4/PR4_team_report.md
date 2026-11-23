@@ -12,7 +12,7 @@
 |100 Trillion in single buy-in gets rejected with AmountTooLarge error | Code | https://github.com/HiddenOffset/PokerTab-Group15/issues/63 | Low | Low | Russell | Fixed |
 Cash-out button records how much a player has when they leave a session and marks them as cashed out | Code | https://github.com/HiddenOffset/PokerTab-Group15/issues/94 | High | High | Russell | Fixed
 recent sessions shows only .pokertab.json | code bug | https://github.com/HiddenOffset/PokerTab-Group15/issues/102 | medium | low | Eric | Fixed 
-|Worked on net color changes| Code bug | https://github.com/HiddenOffset/PokerTab-Group15/issues/41 | Low | | Low | Mason | fixed |
+|Worked on net color changes| Code bug | https://github.com/HiddenOffset/PokerTab-Group15/issues/41 | Low | Low | Mason | fixed |
 |worked on UI for username that are long | Code bug| https://github.com/HiddenOffset/PokerTab-Group15/issues/62 | Low | Low | Mason | Fixed|
 ## 2. Regression Log
 
