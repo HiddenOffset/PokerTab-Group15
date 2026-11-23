@@ -11,7 +11,7 @@
 |Remove button not working| Code bug |https://github.com/HiddenOffset/PokerTab-Group15/issues/100| Medium | Medium | Seyar | Fixed |
 |100 Trillion in single buy-in gets rejected with AmountTooLarge error | Code | https://github.com/HiddenOffset/PokerTab-Group15/issues/63 | Low | Low | Russell | Fixed |
 Cash-out button records how much a player has when they leave a session and marks them as cashed out | Code | https://github.com/HiddenOffset/PokerTab-Group15/issues/94 | High | High | Russell | Fixed
-
+recent sessions shows only .pokertab.json | code bug | medium | low | Eric | Fixed 
 ## 2. Regression Log
 
 
