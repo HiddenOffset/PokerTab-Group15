@@ -270,3 +270,14 @@ TEST_CASE("Bug 95 - duplicate session names do not overwrite files", "[BUG-95]")
     CHECK(loadedSecond.players()[0].name == "Mason");
 
 }
+
+
+//Test case for long names
+TEST_CASE("Bug 62 - long names are saved with", "[edge][frontend]") {
+    Session s = Session::create("Test", "2026-11-22");
+
+	const std::string longName(1000, 'A');
+	REQUIRE_FALSE(s.addPlayer(longName).has_value());
+    REQUIRE(s.players().size() == 1);
+    CHECK(s.players().front().name == longName);
+}
