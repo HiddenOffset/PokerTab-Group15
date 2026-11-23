@@ -2,7 +2,7 @@
 
 **Bug that was fixed #95:** Session name overrides previous work
 
--Issue: [GitHub Issue #95](https://github.com/HiddenOffset/PokerTab-Group15/issues/64)
+-Issue: [GitHub Issue #95] (https://github.com/HiddenOffset/PokerTab-Group15/issues/95)
 -Pull Request: 
 -Severity: [Medium]
 -Priority: [Medium]
