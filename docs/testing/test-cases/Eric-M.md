@@ -56,26 +56,24 @@ HOW TO USE THIS FILE
 
 ---
 
-**Test ID:** 
+**Test ID:** EM-03
 **From Part 6:** (old test number, or New)
-**Written by:**
-**Title:**
-**Traces to:**
-**Test type:**
-**Preconditions:**
+**Written by:** Eric
+**Title:** filename sanatization handles collisions by overwriting silently
+**Traces to:** session_store.cpp
+**Test type:** System
+**Preconditions:** An existing session save
 **Test data:**
 
 **Steps:**
-1.
-2.
-3.
+1. Create a session with an identical name as an existing session
 
-**Expected result:**
-**Actual result:**
-**Status:**
-**Severity:** (Critical / Major / Minor, Fail only)
-**V or V:** (Verification / Validation, Fail only)
-**GitHub Issue:** (#number, Fail only)
+**Expected result:** The system throws an error saying a session with that name already exists
+**Actual result:** The old session is overwritten silently
+**Status:** fail
+**Severity:** Major
+**V or V:** Verification
+**GitHub Issue:** #101
 
 ---
 
