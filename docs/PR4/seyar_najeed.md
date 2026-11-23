@@ -8,15 +8,15 @@
 -Priority: [Medium]
 
 #Before the fix
-<img width="1919" height="880" alt="seyar_najeed_issue95_before(1-2)" src="https://github.com/user-attachments/assets/0ec900b7-d241-435e-88da-d70e45e67dc9" />
-<img width="1919" height="1079" alt="seyar_najeed_issue95_before(2-2)" src="https://github.com/user-attachments/assets/16af21bf-a318-4136-9d7a-0cd2252fb097" />
+<img width="1917" height="1033" alt="seyar_najeed_issue95_before" src="https://github.com/user-attachments/assets/11237dc3-ae59-4d16-a609-ed9463106920" />
+
+
 
 
 
 
 #After the fix 
- <img width="1270" height="826" alt="seyar_najeed_issue95_after(1-2)" src="https://github.com/user-attachments/assets/369b01d4-8401-4962-925a-b3b94fd6a4b0" />
-<img width="604" height="391" alt="seyar_najeed_issue95_after(2-2)" src="https://github.com/user-attachments/assets/db07824a-f710-47e9-b867-beec042c0fc4" />
+<img width="1919" height="1011" alt="seyar_najeed_issue95_after" src="https://github.com/user-attachments/assets/d7ab6bdc-feb9-45d8-b61b-31a91f38ecab" />
 
 
 
