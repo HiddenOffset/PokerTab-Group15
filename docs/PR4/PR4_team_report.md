@@ -14,11 +14,11 @@ Cash-out button records how much a player has when they leave a session and mark
 recent sessions shows only .pokertab.json | code bug | https://github.com/HiddenOffset/PokerTab-Group15/issues/102 | medium | low | Eric | Fixed 
 ## 2. Regression Log
 
-
+TODO
 
 ## 3. Final Test Run
 
-
+TODO
 
 ## 4. Feature Design 
 
@@ -46,6 +46,7 @@ recent sessions shows only .pokertab.json | code bug | https://github.com/Hidden
 
 ## 5. Board Snapshots
 
+![](screenshots/pr4-board-snapshot.png)
 
 ## 6. Sprint Summary
 
