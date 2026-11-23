@@ -62,7 +62,9 @@ namespace pokertab {
         recent_.clear();
         std::error_code ec;
         for (const auto& entry : fs::directory_iterator(SessionStore::defaultSessionsDir(), ec)) {
-            if (entry.is_regular_file() && entry.path().extension() == ".json") recent_.push_back(entry.path());
+            const auto filename = entry.path().filename().string();
+            if (entry.is_regular_file() && filename.size() >= std::string(SessionStore::kFileExtension).size() && filename.compare(filename.size() - std::string(SessionStore::kFileExtension).size(),std::string(SessionStore::kFileExtension).size(),SessionStore::kFileExtension) == 0)
+                recent_.push_back(entry.path());
         }
         std::sort(recent_.begin(), recent_.end(), [](const fs::path& a, const fs::path& b) {
             return a.filename().string() > b.filename().string();  // date prefix => newest first
