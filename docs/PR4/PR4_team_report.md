@@ -16,11 +16,11 @@ recent sessions shows only .pokertab.json | code bug | https://github.com/Hidden
 |worked on UI for username that are long | Code bug| https://github.com/HiddenOffset/PokerTab-Group15/issues/62 | Low | Low | Mason | Fixed|
 ## 2. Regression Log
 
-TODO
+No regressions found. 11/13, 11/27
 
 ## 3. Final Test Run
 
-TODO
+![](screenshots/pr4-final-test-run.png)
 
 ## 4. Feature Design 
 
