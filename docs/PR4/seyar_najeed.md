@@ -20,6 +20,6 @@
 
 
 
-**Explanation:** The bug caused a new session with the same name to overwrite the previous session instead of creating a new one. I tested this by creating another session with the same name and checking what happened to the original session.
+**Explanation:** The bug #95 originally #64 caused a new session with the same name to overwrite the previous session instead of creating a new one. I tested this by creating another session with the same name and checking what happened to the original session.
 
 **AI Disclosure:** I used Claude to help me write mock tests to help me test the fix for my bug.
