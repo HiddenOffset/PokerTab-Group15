@@ -32,10 +32,10 @@ namespace pokertab {
                 //This will check for the name shortened and make it to an ...
                 const std::string candidate = shortened + "...";
                 if (ImGui::CalcTextSize(candidate.c_str()).x <= maxWidth) {
-                    return candidate; 
+                    return candidate;
                 }
             }
-            return "..."; 
+            return "...";
         }
     }
 	//end of the ... for the name column
@@ -181,6 +181,9 @@ namespace pokertab {
         {
             switch (*error)
             {
+            case BuyInError::AlreadyCashedOut:
+                buyInError_ = "Player has already cashed out and can no longer buy-in.";
+                break;
             case BuyInError::PlayerNotFound:
                 buyInError_ = "Select a valid player.";
                 break;
@@ -202,12 +205,10 @@ namespace pokertab {
         persist();
     }
     void Dashboard::onCashOut(int playerId, const std::string& amount) {    // REQ-14, planned
-            //handle errors
-            //take the given amount and add it to cashOutCents for playerId
-        /*
+        // not even sure if this is reachable but onBuyIn does the same thing soooo
         if (!session_)
         {
-            assign cashout error
+            cashOutError_ = "Create or open a session first.";
             return;
         }
 
@@ -215,7 +216,18 @@ namespace pokertab {
         if(error){
             switch (*error)
             {
-
+            case CashOutError::AlreadyCashedOut:
+                cashOutError_ = "Player has already cashed out.";
+                break;
+            case CashOutError::PlayerNotFound:
+                cashOutError_ = "Select a valid player.";
+                break;
+            case CashOutError::InvalidAmount:
+                cashOutError_ = "Enter a positive dollar amount with at most two decimal places.";
+                break;
+            case CashOutError::AmountTooLarge:
+                cashOutError_ = "Cash-out is too large for this session.";
+                break;
             }
             return;
         }
@@ -224,7 +236,6 @@ namespace pokertab {
         const Player* player = session_->findPlayer(playerId);
         showStatus("Recorded " + formatCents(player->transactions.back().amountCents) +
             " cash-out for " + player->name);
-        */
     }
     void Dashboard::onUndo() {  // REQ-22, planned
         //look at the last session transactionId, see if it's buyIn or cashOut,
@@ -387,15 +398,15 @@ namespace pokertab {
 
             for (const Player& p : s.players()) {
                 ImGui::TableNextRow();
-				
+
                 //This is still for the ... for the name column
 				//This is so it can be showed in the table and not be too long
                 ImGui::TableNextColumn();
-               
+
                 //This will shorten name for the table if it becomes too wide
                 const std::string displayName =
                     displayNameForColumn(p.name, ImGui::GetContentRegionAvail().x);
-                 
+
                 //This will show the name
                 ImGui::TextUnformatted(displayName.c_str());
                 //end of fixed code
