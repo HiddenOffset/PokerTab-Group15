@@ -44,9 +44,13 @@ Wireframes: [docs/wireframes](docs/wireframes) · Screenshots: [docs/screenshots
 ```
 cmake -S . -B build
 cmake --build build
-ctest --test-dir build --output-on-failure
+ctest --test-dir build -C debug --output-on-failure
 ```
 
+```
+cmake --build build --config Debug
+& ".\build\Debug\pokertab_tests.exe" --reporter compact
+```
 Then run `build/app/pokertab` (macOS, Linux) or `build\app\Debug\pokertab.exe`
 (Windows). Sessions are saved to `~/.pokertab/sessions/` or
 `%APPDATA%\PokerTab\sessions\`.
