@@ -117,14 +117,28 @@ std::filesystem::path SessionStore::defaultSessionsDir() {
     return fs::current_path() / "sessions";
 }
 
+
 std::filesystem::path SessionStore::pathFor(const Session& s) {
+    namespace fs = std::filesystem;
+
     std::string file;
     for (char c : s.name()) {
         const bool ok = std::isalnum(static_cast<unsigned char>(c)) || c == '-' || c == '_';
         file += ok ? c : '_';
     }
     if (file.empty()) file = "session";
-    return defaultSessionsDir() / (s.date() + "_" + file + kFileExtension);
+
+    fs::path path = defaultSessionsDir() / (s.date() + "_" + file + kFileExtension);
+
+    int counter = 1;
+    while (fs::exists(path)) {
+        path = defaultSessionsDir() /
+            (s.date() + "_" + file + "_" + std::to_string(counter) + kFileExtension);
+        counter++;
+    }
+
+    return path;
 }
+
 
 }  // namespace pokertab
